@@ -61,3 +61,12 @@ func ParseV2ray(conf string) (*V2rayConfig, error) {
 
 	return v2rayConfig, nil
 }
+
+func (v2ray *V2rayConfig) Save(conf string) error {
+	confJson, err := os.OpenFile(conf, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+	if err != nil {
+		return err
+	}
+
+	return json.NewEncoder(confJson).Encode(v2ray)
+}
