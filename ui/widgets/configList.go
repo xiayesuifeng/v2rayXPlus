@@ -9,22 +9,21 @@ import (
 )
 
 type ConfigList struct {
-	*widgets.QWidget
+	widgets.QWidget
 
 	vboxLayout *widgets.QVBoxLayout
-}
 
-func NewConfigList(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *ConfigList {
-	widget := widgets.NewQWidget(parent, fo)
+	buttonGroup *widgets.QButtonGroup
 
-	configList := &ConfigList{QWidget: widget}
-	configList.init()
+	_ func() `constructor:"init"`
 
-	return configList
+	_ func(name string) `signal:"configChange"`
 }
 
 func (ptr *ConfigList) init() {
 	ptr.vboxLayout = widgets.NewQVBoxLayout2(ptr)
+
+	ptr.buttonGroup = widgets.NewQButtonGroup(ptr)
 
 	infos, err := ioutil.ReadDir(conf.ConfigPath)
 	if err == nil {
@@ -33,9 +32,18 @@ func (ptr *ConfigList) init() {
 				name := strings.Split(info.Name(), ".json")[0]
 				tmp := NewConfigListItem(name, ptr)
 				ptr.vboxLayout.AddWidget(tmp, 0, core.Qt__AlignCenter)
+				ptr.buttonGroup.AddButton(tmp, 0)
 			}
 		}
 	}
 
 	ptr.SetLayout(ptr.vboxLayout)
+
+	ptr.initConnect()
+}
+
+func (ptr *ConfigList) initConnect() {
+	ptr.buttonGroup.ConnectButtonClicked(func(button *widgets.QAbstractButton) {
+		ptr.ConfigChange(button.Text())
+	})
 }
