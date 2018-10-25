@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/resources">
+        <file>outline-close-24px.svg</file>
+        <file>outline-done_all-24px.svg</file>
+        <file>outline-edit-24px.svg</file>
+    </qresource>
+</RCC>
