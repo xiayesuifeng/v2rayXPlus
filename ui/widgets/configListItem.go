@@ -7,22 +7,17 @@ import (
 )
 
 type ConfigListItem struct {
-	*widgets.QPushButton
+	widgets.QPushButton
 
 	toolFrame *widgets.QFrame
 
-	EditButton   *widgets.QPushButton
-	RemoveButton *widgets.QPushButton
-}
+	editButton   *widgets.QPushButton
+	removeButton *widgets.QPushButton
 
-func NewConfigListItem(text string, parent widgets.QWidget_ITF) *ConfigListItem {
-	widget := widgets.NewQPushButton2(text, parent)
+	_ func() `constructor:"init"`
 
-	configListItem := &ConfigListItem{QPushButton: widget}
-	configListItem.init()
-	configListItem.initConnect()
-
-	return configListItem
+	_ func(name string) `signal:"editConfig"`
+	_ func(name string) `signal:"removeConfig"`
 }
 
 func (ptr *ConfigListItem) init() {
@@ -37,16 +32,18 @@ func (ptr *ConfigListItem) init() {
 	toolLayout.SetSpacing(6)
 	toolLayout.SetAlign(core.Qt__AlignRight)
 
-	ptr.EditButton = widgets.NewQPushButton(ptr.toolFrame)
-	ptr.EditButton.SetFixedSize2(24, 24)
-	ptr.EditButton.SetStyleSheet(styles.EditButton)
+	ptr.editButton = widgets.NewQPushButton(ptr.toolFrame)
+	ptr.editButton.SetFixedSize2(24, 24)
+	ptr.editButton.SetStyleSheet(styles.EditButton)
 
-	ptr.RemoveButton = widgets.NewQPushButton(ptr.toolFrame)
-	ptr.RemoveButton.SetFixedSize2(24, 24)
-	ptr.RemoveButton.SetStyleSheet(styles.RemoveButton)
+	ptr.removeButton = widgets.NewQPushButton(ptr.toolFrame)
+	ptr.removeButton.SetFixedSize2(24, 24)
+	ptr.removeButton.SetStyleSheet(styles.RemoveButton)
 
-	toolLayout.AddWidget(ptr.EditButton, 0, core.Qt__AlignRight)
-	toolLayout.AddWidget(ptr.RemoveButton, 0, core.Qt__AlignRight)
+	toolLayout.AddWidget(ptr.editButton, 0, core.Qt__AlignRight)
+	toolLayout.AddWidget(ptr.removeButton, 0, core.Qt__AlignRight)
+
+	ptr.initConnect()
 }
 
 func (ptr *ConfigListItem) initConnect() {
@@ -56,5 +53,13 @@ func (ptr *ConfigListItem) initConnect() {
 
 	ptr.ConnectLeaveEvent(func(event *core.QEvent) {
 		ptr.toolFrame.SetVisible(false)
+	})
+
+	ptr.editButton.ConnectClicked(func(checked bool) {
+		ptr.EditConfig(ptr.Text())
+	})
+
+	ptr.removeButton.ConnectClicked(func(checked bool) {
+		ptr.RemoveConfig(ptr.Text())
 	})
 }

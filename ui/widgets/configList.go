@@ -18,6 +18,8 @@ type ConfigList struct {
 	_ func() `constructor:"init"`
 
 	_ func(name string) `signal:"configChange"`
+	_ func(name string) `signal:"editConfig"`
+	_ func(name string) `signal:"removeConfig"`
 }
 
 func (ptr *ConfigList) init() {
@@ -30,7 +32,9 @@ func (ptr *ConfigList) init() {
 		for _, info := range infos {
 			if !info.IsDir() && strings.HasSuffix(info.Name(), ".json") {
 				name := strings.Split(info.Name(), ".json")[0]
-				tmp := NewConfigListItem(name, ptr)
+				tmp := NewConfigListItem2(name, ptr)
+				tmp.ConnectEditConfig(ptr.EditConfig)
+				tmp.ConnectRemoveConfig(ptr.RemoveConfig)
 				ptr.vboxLayout.AddWidget(tmp, 0, core.Qt__AlignCenter)
 				ptr.buttonGroup.AddButton(tmp, 0)
 			}
