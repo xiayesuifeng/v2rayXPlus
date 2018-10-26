@@ -10,11 +10,13 @@ import (
 type MainFrame struct {
 	*widgets.QFrame
 
-	vboxLayout *widgets.QVBoxLayout
+	hboxLayout *widgets.QHBoxLayout
 
 	configList *widgets2.ConfigList
 
 	startButton *widgets.QPushButton
+
+	configEdit *widgets2.ConfigEdit
 }
 
 func NewMainFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *MainFrame {
@@ -27,16 +29,20 @@ func NewMainFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *MainFrame
 }
 
 func (m *MainFrame) init() {
-	m.vboxLayout = widgets.NewQVBoxLayout2(m)
+	m.hboxLayout = widgets.NewQHBoxLayout2(m)
+	m.hboxLayout.SetSpacing(0)
+	m.hboxLayout.SetContentsMargins(0, 0, 0, 0)
+
+	vboxLayout := widgets.NewQVBoxLayout2(m)
 
 	m.configList = widgets2.NewConfigList(m, 0)
 
 	m.startButton = widgets.NewQPushButton2("启动", m)
 	m.startButton.SetFixedSize2(230, 230)
 
-	m.vboxLayout.AddSpacing(60)
-	m.vboxLayout.AddWidget(m.startButton, 0, core.Qt__AlignHCenter)
-	m.vboxLayout.AddSpacing(48)
+	vboxLayout.AddSpacing(60)
+	vboxLayout.AddWidget(m.startButton, 0, core.Qt__AlignHCenter)
+	vboxLayout.AddSpacing(48)
 	var versionLabel *widgets.QLabel
 	if version, err := core2.GetVension(); err != nil {
 		versionLabel = widgets.NewQLabel2("v2ray版本: 未安装", m, 0)
@@ -44,12 +50,17 @@ func (m *MainFrame) init() {
 		versionLabel = widgets.NewQLabel2("v2ray版本: "+version, m, 0)
 	}
 
-	m.vboxLayout.AddWidget(versionLabel, 0, core.Qt__AlignHCenter)
-	m.vboxLayout.AddWidget(m.configList, 1, core.Qt__AlignBottom)
+	vboxLayout.AddWidget(versionLabel, 0, core.Qt__AlignHCenter)
+	vboxLayout.AddWidget(m.configList, 1, core.Qt__AlignBottom)
 
-	m.vboxLayout.AddSpacing(60)
+	vboxLayout.AddSpacing(60)
 
-	m.SetLayout(m.vboxLayout)
+	m.configEdit = widgets2.NewConfigEdit(m, 0)
+
+	m.hboxLayout.AddLayout(vboxLayout, 0)
+	m.hboxLayout.AddWidget(m.configEdit, 0, core.Qt__AlignRight)
+
+	m.SetLayout(m.hboxLayout)
 }
 
 func (m *MainFrame) initConnect() {
@@ -59,5 +70,13 @@ func (m *MainFrame) initConnect() {
 		} else if m.startButton.Text() == "关闭" {
 			m.startButton.SetText("启动")
 		}
+	})
+
+	m.configList.ConnectConfigChange(m.configEdit.ConfigChange)
+
+	m.configList.ConnectEditConfig(m.configEdit.EditChange)
+
+	m.configList.ConnectEditConfig(func(name string) {
+		m.ParentWidget().SetFixedSize(core.NewQSize2(1050, 600))
 	})
 }
