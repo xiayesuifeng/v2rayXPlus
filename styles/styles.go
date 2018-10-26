@@ -116,3 +116,49 @@ QPushButton::hover {
 QPushButton::pressed {
   background-color: rgba(255, 255, 255, 0.5);
 }`
+
+const StartButton string = `
+QPushButton {
+  border: 2px;
+  outline: none;
+  color: #eaeaea;
+  border-radius: 115px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+QPushButton {
+  border-image: url(":/resources/rochet_start.png");
+}
+
+QPushButton::hover {
+  border-image: url(":/resources/rochet_stop.png");
+  background-color: #0828f1a6;
+}
+
+QPushButton::pressed {
+  border-image: url(":/resources/rochet_stop.png");
+  background-color: rgba(255, 255, 255, 0.3);
+}`
+
+const StopButton string = `
+QPushButton {
+  border: 2px;
+  outline: none;
+  color: #eaeaea;
+  border-radius: 115px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+QPushButton {
+  border-image: url(":/resources/rochet_stop.png");
+}
+
+QPushButton::hover {
+  border-image: url(":/resources/rochet_start.png");
+  background-color: #0860d8ff;
+}
+
+QPushButton::pressed {
+  border-image: url(":/resources/rochet_start.png");
+  background-color: rgba(255, 255, 255, 0.3);
+}`
