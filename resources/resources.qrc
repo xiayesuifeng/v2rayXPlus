@@ -5,5 +5,7 @@
         <file>outline-done-24px.svg</file>
         <file>outline-done_all-24px.svg</file>
         <file>outline-edit-24px.svg</file>
+        <file>rochet_start.png</file>
+        <file>rochet_stop.png</file>
     </qresource>
 </RCC>
