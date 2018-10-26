@@ -15,12 +15,12 @@ QPushButton {
 
 QPushButton::hover {
   border-image: url(":/resources/outline-edit-24px.svg");
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
   border-image: url(":/resources/outline-edit-24px.svg");
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.3);
 }`
 
 const RemoveButton string = `
@@ -36,12 +36,12 @@ QPushButton {
 
 QPushButton::hover {
   border-image: url(":/resources/outline-close-24px.svg");
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
   border-image: url(":/resources/outline-close-24px.svg");
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.3);
 }`
 
 const SaveButton string = `
@@ -56,18 +56,18 @@ QPushButton {
 }
 
 QPushButton {
-  background-image: url(":/resources/outline-done-24px.svg") 2 2 2 2 repeat repeat;
+  background-image: url(":/resources/outline-done-24px.svg");
   background-color: rgb(255, 255, 255);
 }
 
 QPushButton::hover {
   background-image: url(":/resources/outline-done-24px.svg");
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
-  border-image: url(":/resources/outline-done-24px.svg");
-  background-image: rgba(255, 255, 255, 0.5);
+  background-image: url(":/resources/outline-done-24px.svg");
+  background-image: rgba(255, 255, 255, 0.3);
 }`
 
 const CancelButton string = `
@@ -87,12 +87,12 @@ QPushButton {
 
 QPushButton::hover {
   background-image: url(":/resources/outline-close-24px.svg");
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
   background-image: url(":/resources/outline-close-24px.svg");
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.3);
 }`
 
 const ConfigListItem string = `
@@ -110,9 +110,9 @@ QPushButton::checked {
 }
 
 QPushButton::hover {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 QPushButton::pressed {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.5);
 }`
