@@ -4,6 +4,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	core2 "gitlab.com/xiayesuifeng/v2rayxplus/core"
+	"gitlab.com/xiayesuifeng/v2rayxplus/styles"
 	widgets2 "gitlab.com/xiayesuifeng/v2rayxplus/ui/widgets"
 )
 
@@ -37,8 +38,9 @@ func (m *MainFrame) init() {
 
 	m.configList = widgets2.NewConfigList(m, 0)
 
-	m.startButton = widgets.NewQPushButton2("启动", m)
+	m.startButton = widgets.NewQPushButton(m)
 	m.startButton.SetFixedSize2(230, 230)
+	m.startButton.SetStyleSheet(styles.StartButton)
 
 	vboxLayout.AddSpacing(60)
 	vboxLayout.AddWidget(m.startButton, 0, core.Qt__AlignHCenter)
@@ -65,10 +67,12 @@ func (m *MainFrame) init() {
 
 func (m *MainFrame) initConnect() {
 	m.startButton.ConnectClicked(func(checked bool) {
-		if m.startButton.Text() == "启动" {
-			m.startButton.SetText("关闭")
-		} else if m.startButton.Text() == "关闭" {
-			m.startButton.SetText("启动")
+		if m.startButton.WindowTitle() == "on" {
+			m.startButton.SetWindowTitle("off")
+			m.startButton.SetStyleSheet(styles.StopButton)
+		} else {
+			m.startButton.SetWindowTitle("on")
+			m.startButton.SetStyleSheet(styles.StartButton)
 		}
 	})
 
