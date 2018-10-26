@@ -18,7 +18,7 @@ QPushButton::hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-QPushBUtton::pressed {
+QPushButton::pressed {
   border-image: url(":/resources/outline-edit-24px.svg");
   background-color: rgba(255, 255, 255, 0.1);
 }`
@@ -39,7 +39,7 @@ QPushButton::hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-QPushBUtton::pressed {
+QPushButton::pressed {
   border-image: url(":/resources/outline-close-24px.svg");
   background-color: rgba(255, 255, 255, 0.1);
 }`
@@ -65,7 +65,7 @@ QPushButton::hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-QPushBUtton::pressed {
+QPushButton::pressed {
   border-image: url(":/resources/outline-done-24px.svg");
   background-image: rgba(255, 255, 255, 0.5);
 }`
@@ -90,7 +90,7 @@ QPushButton::hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-QPushBUtton::pressed {
+QPushButton::pressed {
   background-image: url(":/resources/outline-close-24px.svg");
   background-color: rgba(255, 255, 255, 0.5);
 }`
@@ -113,6 +113,6 @@ QPushButton::hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-QPushBUtton::pressed {
+QPushButton::pressed {
   background-color: rgba(255, 255, 255, 0.3);
 }`
