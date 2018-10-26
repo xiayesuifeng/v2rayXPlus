@@ -24,6 +24,7 @@ type ConfigList struct {
 
 func (ptr *ConfigList) init() {
 	ptr.vboxLayout = widgets.NewQVBoxLayout2(ptr)
+	ptr.vboxLayout.SetSpacing(0)
 
 	ptr.buttonGroup = widgets.NewQButtonGroup(ptr)
 
@@ -40,6 +41,8 @@ func (ptr *ConfigList) init() {
 			}
 		}
 	}
+
+	ptr.buttonGroup.Buttons()[0].SetChecked(true)
 
 	ptr.SetLayout(ptr.vboxLayout)
 

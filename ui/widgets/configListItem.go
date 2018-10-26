@@ -23,6 +23,8 @@ type ConfigListItem struct {
 func (ptr *ConfigListItem) init() {
 	ptr.SetFixedSize2(300, 40)
 	ptr.SetCheckable(true)
+	ptr.SetStyleSheet(styles.ConfigListItem)
+	ptr.SetFocusPolicy(core.Qt__NoFocus)
 
 	ptr.toolFrame = widgets.NewQFrame(ptr, 0)
 	ptr.toolFrame.SetVisible(false)
