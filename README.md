@@ -1,7 +1,8 @@
 # v2rayXPlus
-![](https://gitlab.com/xiayesuifeng/v2rayxplus/tree/master/resources/v2rayXPlus-64px.svg)
+![](https://gitlab.com/xiayesuifeng/v2rayxplus/raw/master/resources/v2rayXPlus-64px.svg)
 
 > 使用go写的v2ray gui客户端
+
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/xiayesuifeng/v2rayxplus)](https://goreportcard.com/report/gitlab.com/xiayesuifeng/v2rayxplus)
 [![GoDoc](https://godoc.org/gitlab.com/xiayesuifeng/v2rayxplus?status.svg)](https://godoc.org/gitlab.com/xiayesuifeng/v2rayxplus)
 [![Sourcegraph](https://sourcegraph.com/gitlab.com/xiayesuifeng/v2rayxplus/-/badge.svg)](https://sourcegraph.com/gitlab.com/xiayesuifeng/v2rayxplus)
