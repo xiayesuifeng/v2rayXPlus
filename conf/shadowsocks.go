@@ -1,5 +1,9 @@
 package conf
 
+import (
+	"encoding/json"
+)
+
 type ShadowsocksServer struct {
 	Address  string `json:"address"`
 	Port     uint16 `json:"port"`
@@ -12,4 +16,9 @@ type ShadowsocksServer struct {
 
 type ShadowsocksConfig struct {
 	Servers []ShadowsocksServer `json:"servers"`
+}
+
+func NewShadowsocksServer(jsonData json.RawMessage) (*ShadowsocksConfig, error) {
+	conf := &ShadowsocksConfig{}
+	return conf, json.Unmarshal(jsonData, conf)
 }
