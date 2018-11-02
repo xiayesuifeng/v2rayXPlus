@@ -3,6 +3,7 @@ package configEdit
 import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 )
 
 type ShadowsocsConfig struct {
@@ -16,7 +17,6 @@ type ShadowsocsConfig struct {
 	methodEdit *widgets.QComboBox
 
 	otaCheckBox *widgets.QCheckBox
-	udpCheckBox *widgets.QCheckBox
 }
 
 func NewShadowsocsConfig(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *ShadowsocsConfig {
@@ -39,7 +39,6 @@ func (ptr *ShadowsocsConfig) init() {
 
 	ptr.methodEdit = widgets.NewQComboBox(ptr)
 	ptr.otaCheckBox = widgets.NewQCheckBox2("ota", ptr)
-	ptr.udpCheckBox = widgets.NewQCheckBox2("udp转发", ptr)
 
 	ptr.methodEdit.AddItems([]string{"aes-256-cfb", "aes-128-cfb", "chacha20", "chacha20-ietf", "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305"})
 	ptr.methodEdit.SetCurrentIndexDefault(5)
@@ -48,7 +47,13 @@ func (ptr *ShadowsocsConfig) init() {
 	ptr.formLayout.AddRow3("加密协议", ptr.methodEdit)
 	ptr.formLayout.AddRow3("密码", ptr.passwordEdit)
 	ptr.formLayout.AddRow5(ptr.otaCheckBox)
-	ptr.formLayout.AddRow5(ptr.udpCheckBox)
 
 	ptr.SetLayout(ptr.formLayout)
+}
+
+func (ptr *ShadowsocsConfig) ParseConf(config conf.ShadowsocksServer) {
+	ptr.emailEdit.SetText(config.Email)
+	ptr.passwordEdit.SetText(config.Password)
+	ptr.methodEdit.SetCurrentText(config.Cipher)
+	ptr.otaCheckBox.SetChecked(config.Ota)
 }
