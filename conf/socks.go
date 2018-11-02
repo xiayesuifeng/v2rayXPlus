@@ -13,3 +13,12 @@ type SocksServerConfig struct {
 	Timeout    uint32          `json:"timeout"`
 	UserLevel  uint32          `json:"userLevel"`
 }
+
+type SocksRemoteConfig struct {
+	Address string         `json:"address"`
+	Port    uint16         `json:"port"`
+	Users   []SocksAccount `json:"users"`
+}
+type SocksClientConfig struct {
+	Servers []*SocksRemoteConfig `json:"servers"`
+}
