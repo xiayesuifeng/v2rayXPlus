@@ -14,7 +14,7 @@ type ShadowsocsConfig struct {
 	emailEdit    *widgets.QLineEdit
 	passwordEdit *widgets.QLineEdit
 
-	methodEdit *widgets.QComboBox
+	methodComboBox *widgets.QComboBox
 
 	otaCheckBox *widgets.QCheckBox
 }
@@ -37,14 +37,14 @@ func (ptr *ShadowsocsConfig) init() {
 
 	ptr.emailEdit.SetPlaceholderText("可选")
 
-	ptr.methodEdit = widgets.NewQComboBox(ptr)
+	ptr.methodComboBox = widgets.NewQComboBox(ptr)
 	ptr.otaCheckBox = widgets.NewQCheckBox2("ota", ptr)
 
-	ptr.methodEdit.AddItems([]string{"aes-256-cfb", "aes-128-cfb", "chacha20", "chacha20-ietf", "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305"})
-	ptr.methodEdit.SetCurrentIndexDefault(5)
+	ptr.methodComboBox.AddItems([]string{"aes-256-cfb", "aes-128-cfb", "chacha20", "chacha20-ietf", "aes-256-gcm", "aes-128-gcm", "chacha20-poly1305"})
+	ptr.methodComboBox.SetCurrentIndexDefault(5)
 
 	ptr.formLayout.AddRow3("邮箱", ptr.emailEdit)
-	ptr.formLayout.AddRow3("加密协议", ptr.methodEdit)
+	ptr.formLayout.AddRow3("加密协议", ptr.methodComboBox)
 	ptr.formLayout.AddRow3("密码", ptr.passwordEdit)
 	ptr.formLayout.AddRow5(ptr.otaCheckBox)
 
@@ -54,6 +54,6 @@ func (ptr *ShadowsocsConfig) init() {
 func (ptr *ShadowsocsConfig) ParseConf(config conf.ShadowsocksServer) {
 	ptr.emailEdit.SetText(config.Email)
 	ptr.passwordEdit.SetText(config.Password)
-	ptr.methodEdit.SetCurrentText(config.Cipher)
+	ptr.methodComboBox.SetCurrentText(config.Cipher)
 	ptr.otaCheckBox.SetChecked(config.Ota)
 }
