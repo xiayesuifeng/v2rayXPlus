@@ -3,7 +3,11 @@ package configEdit
 import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	"gitlab.com/xiayesuifeng/v2rayxplus/styles"
+	"log"
+	"path"
+	"strconv"
 )
 
 type ConfigEdit struct {
@@ -25,6 +29,7 @@ type ConfigEdit struct {
 	socksConfig      *SocksConfig
 
 	confName string
+	conf     *conf.V2rayConfig
 }
 
 func NewConfigEdit(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *ConfigEdit {
@@ -50,7 +55,7 @@ func (ptr *ConfigEdit) init() {
 	ptr.portEdit = widgets.NewQLineEdit(ptr)
 
 	ptr.protocolComboBox = widgets.NewQComboBox(ptr)
-	ptr.protocolComboBox.AddItems([]string{"shadowsocks", "vemss", "socks"})
+	ptr.protocolComboBox.AddItems([]string{"shadowsocks", "vmess", "socks"})
 
 	baseConfigLayout.AddRow3("服务器", ptr.serviceEdit)
 	baseConfigLayout.AddRow3("端口", ptr.portEdit)
@@ -113,6 +118,42 @@ func (ptr *ConfigEdit) EditChange(name string) {
 
 func (ptr *ConfigEdit) parseConfig(name string) {
 	ptr.confName = name
+
+	var err error
+	ptr.conf, err = conf.ParseV2ray(path.Join(conf.ConfigPath, name+".json"))
+	if err != nil {
+		log.Println(err)
+	}
+
+	protocol := ptr.conf.OutboundConfig.Protocol
+	ptr.protocolComboBox.SetCurrentText(protocol)
+	switch protocol {
+	case "shadowsocks":
+		shadowsocksConf, err := conf.NewShadowsocksServer(ptr.conf.OutboundConfig.Settings)
+		if err != nil {
+			log.Println(err)
+		}
+		if len(shadowsocksConf.Servers) > 0 {
+			ptr.serviceEdit.SetText(shadowsocksConf.Servers[0].Address)
+			port := strconv.FormatUint(uint64(shadowsocksConf.Servers[0].Port), 10)
+			ptr.portEdit.SetText(port)
+			ptr.shadowsocsConfig.ParseConf(shadowsocksConf.Servers[0])
+		}
+	case "vmess":
+		vmessConf, err := conf.NewVMessOutboundConfig(ptr.conf.OutboundConfig.Settings)
+		if err != nil {
+			log.Println(err)
+		}
+		if len(vmessConf.Receivers) > 0 {
+			ptr.serviceEdit.SetText(vmessConf.Receivers[0].Address)
+			port := strconv.FormatUint(uint64(vmessConf.Receivers[0].Port), 10)
+			ptr.portEdit.SetText(port)
+			ptr.vmessConfig.ParseConf(vmessConf.Receivers[0])
+		}
+
+	case "socks":
+
+	}
 }
 
 func (ptr *ConfigEdit) saveConfig() {
