@@ -1,4 +1,4 @@
-package widgets
+package configEdit
 
 import (
 	"github.com/therecipe/qt/core"

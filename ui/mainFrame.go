@@ -5,6 +5,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 	core2 "gitlab.com/xiayesuifeng/v2rayxplus/core"
 	"gitlab.com/xiayesuifeng/v2rayxplus/styles"
+	"gitlab.com/xiayesuifeng/v2rayxplus/ui/configEdit"
 	widgets2 "gitlab.com/xiayesuifeng/v2rayxplus/ui/widgets"
 )
 
@@ -17,7 +18,7 @@ type MainFrame struct {
 
 	startButton *widgets.QPushButton
 
-	configEdit *widgets2.ConfigEdit
+	configEdit *configEdit.ConfigEdit
 }
 
 func NewMainFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *MainFrame {
@@ -57,7 +58,7 @@ func (m *MainFrame) init() {
 
 	vboxLayout.AddSpacing(60)
 
-	m.configEdit = widgets2.NewConfigEdit(m, 0)
+	m.configEdit = configEdit.NewConfigEdit(m, 0)
 
 	m.hboxLayout.AddLayout(vboxLayout, 0)
 	m.hboxLayout.AddWidget(m.configEdit, 0, core.Qt__AlignRight)
