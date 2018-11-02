@@ -1,5 +1,7 @@
 package conf
 
+import "encoding/json"
+
 type SocksAccount struct {
 	Username string `json:"user"`
 	Password string `json:"pass"`
@@ -21,4 +23,9 @@ type SocksRemoteConfig struct {
 }
 type SocksClientConfig struct {
 	Servers []*SocksRemoteConfig `json:"servers"`
+}
+
+func NewSocksClientConfig(jsonData json.RawMessage) (*SocksClientConfig, error) {
+	conf := &SocksClientConfig{}
+	return conf, json.Unmarshal(jsonData, conf)
 }
