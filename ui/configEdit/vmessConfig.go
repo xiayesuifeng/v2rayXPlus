@@ -3,6 +3,8 @@ package configEdit
 import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	"strconv"
 )
 
 type VmessConfig struct {
@@ -34,4 +36,12 @@ func (ptr *VmessConfig) init() {
 	ptr.formLayout.AddRow3("alterId", ptr.alterIdLineEdit)
 
 	ptr.SetLayout(ptr.formLayout)
+}
+
+func (ptr *VmessConfig) ParseConf(config *conf.VMessOutboundTarget) {
+	if len(config.Users) > 0 {
+		ptr.uuidLineEdit.SetText(config.Users[0].ID)
+		alterId := strconv.FormatUint(uint64(config.Users[0].AlterIds), 10)
+		ptr.alterIdLineEdit.SetText(alterId)
+	}
 }

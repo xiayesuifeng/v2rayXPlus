@@ -1,5 +1,7 @@
 package conf
 
+import "encoding/json"
+
 type VMessAccount struct {
 	ID       string `json:"id"`
 	AlterIds uint16 `json:"alterId"`
@@ -14,4 +16,9 @@ type VMessOutboundTarget struct {
 
 type VMessOutboundConfig struct {
 	Receivers []*VMessOutboundTarget `json:"vnext"`
+}
+
+func NewVMessOutboundConfig(jsonData json.RawMessage) (*VMessOutboundConfig, error) {
+	conf := &VMessOutboundConfig{}
+	return conf, json.Unmarshal(jsonData, conf)
 }
