@@ -11,6 +11,11 @@ type ConfigEdit struct {
 
 	vboxLayout *widgets.QVBoxLayout
 
+	serviceEdit *widgets.QLineEdit
+	portEdit    *widgets.QLineEdit
+
+	protocolComboBox *widgets.QComboBox
+
 	saveButton   *widgets.QPushButton
 	cancelButton *widgets.QPushButton
 
@@ -34,6 +39,18 @@ func (ptr *ConfigEdit) init() {
 	ptr.vboxLayout = widgets.NewQVBoxLayout2(ptr)
 	ptr.vboxLayout.SetContentsMargins(20, 20, 20, 20)
 
+	baseConfigLayout := widgets.NewQFormLayout(ptr)
+
+	ptr.serviceEdit = widgets.NewQLineEdit(ptr)
+	ptr.portEdit = widgets.NewQLineEdit(ptr)
+
+	ptr.protocolComboBox = widgets.NewQComboBox(ptr)
+	ptr.protocolComboBox.AddItems([]string{"shadowsocks", "vemss", "socks"})
+
+	baseConfigLayout.AddRow3("服务器", ptr.serviceEdit)
+	baseConfigLayout.AddRow3("端口", ptr.portEdit)
+	baseConfigLayout.AddRow3("协议", ptr.protocolComboBox)
+
 	actionLayout := widgets.NewQHBoxLayout2(ptr)
 	actionLayout.SetSpacing(20)
 
@@ -51,6 +68,7 @@ func (ptr *ConfigEdit) init() {
 	actionLayout.AddWidget(ptr.cancelButton, 0, core.Qt__AlignCenter)
 	actionLayout.AddStretch(1)
 
+	ptr.vboxLayout.AddLayout(baseConfigLayout, 1)
 	ptr.vboxLayout.AddStretch(1)
 	ptr.vboxLayout.AddLayout(actionLayout, 0)
 
@@ -61,6 +79,10 @@ func (ptr *ConfigEdit) initConnect() {
 	ptr.cancelButton.ConnectClicked(func(checked bool) {
 		ptr.SetVisible(false)
 		ptr.ParentWidget().ParentWidget().SetFixedSize2(350, 600)
+	})
+
+	ptr.protocolComboBox.ConnectCurrentIndexChanged2(func(text string) {
+
 	})
 }
 
