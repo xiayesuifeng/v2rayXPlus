@@ -25,6 +25,7 @@ func NewVmessConfig(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *VmessCo
 
 func (ptr *VmessConfig) init() {
 	ptr.formLayout = widgets.NewQFormLayout(ptr)
+	ptr.formLayout.SetContentsMargins(0, 0, 0, 0)
 
 	ptr.uuidLineEdit = widgets.NewQLineEdit(ptr)
 	ptr.alterIdLineEdit = widgets.NewQLineEdit2("64", ptr)
