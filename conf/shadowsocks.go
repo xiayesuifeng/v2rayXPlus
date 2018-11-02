@@ -9,3 +9,7 @@ type ShadowsocksServer struct {
 	Ota      bool   `json:"ota"`
 	Level    byte   `json:"level"`
 }
+
+type ShadowsocksConfig struct {
+	Servers []ShadowsocksServer `json:"servers"`
+}
