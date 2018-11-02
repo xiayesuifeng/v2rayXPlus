@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	"gitlab.com/xiayesuifeng/v2rayxplus/ui"
@@ -14,6 +15,7 @@ func main() {
 	app := widgets.NewQApplication(len(os.Args), os.Args)
 	app.SetApplicationVersion("0.1.0")
 	app.SetApplicationName("v2rayXPlus")
+	app.SetWindowIcon(gui.NewQIcon5(":/resources/v2rayXPlus-64px.svg"))
 
 	ui.NewMainWindow().Show()
 
