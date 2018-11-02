@@ -3,6 +3,7 @@ package configEdit
 import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 )
 
 type SocksConfig struct {
@@ -40,4 +41,11 @@ func (ptr *SocksConfig) init() {
 	ptr.formLayout.AddRow3("level", ptr.levelEdit)
 
 	ptr.SetLayout(ptr.formLayout)
+}
+
+func (ptr *SocksConfig) ParseConf(config *conf.SocksRemoteConfig) {
+	if len(config.Users) > 0 {
+		ptr.userEdit.SetText(config.Users[0].Username)
+		ptr.passEdit.SetText(config.Users[0].Password)
+	}
 }

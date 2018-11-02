@@ -152,7 +152,16 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 		}
 
 	case "socks":
-
+		socksConfig, err := conf.NewSocksClientConfig(ptr.conf.OutboundConfig.Settings)
+		if err != nil {
+			log.Println(err)
+		}
+		if len(socksConfig.Servers) > 0 {
+			ptr.serviceEdit.SetText(socksConfig.Servers[0].Address)
+			port := strconv.FormatUint(uint64(socksConfig.Servers[0].Port), 10)
+			ptr.portEdit.SetText(port)
+			ptr.socksConfig.ParseConf(socksConfig.Servers[0])
+		}
 	}
 }
 
