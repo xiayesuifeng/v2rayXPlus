@@ -9,7 +9,8 @@ import (
 type ConfigEdit struct {
 	*widgets.QFrame
 
-	vboxLayout *widgets.QVBoxLayout
+	vboxLayout     *widgets.QVBoxLayout
+	protocolLayout *widgets.QStackedLayout
 
 	serviceEdit *widgets.QLineEdit
 	portEdit    *widgets.QLineEdit
@@ -18,6 +19,10 @@ type ConfigEdit struct {
 
 	saveButton   *widgets.QPushButton
 	cancelButton *widgets.QPushButton
+
+	shadowsocsConfig *ShadowsocsConfig
+	vmessConfig      *VmessConfig
+	socksConfig      *SocksConfig
 
 	confName string
 }
@@ -51,6 +56,16 @@ func (ptr *ConfigEdit) init() {
 	baseConfigLayout.AddRow3("端口", ptr.portEdit)
 	baseConfigLayout.AddRow3("协议", ptr.protocolComboBox)
 
+	ptr.protocolLayout = widgets.NewQStackedLayout2(ptr)
+
+	ptr.shadowsocsConfig = NewShadowsocsConfig(ptr, 0)
+	ptr.vmessConfig = NewVmessConfig(ptr, 0)
+	ptr.socksConfig = NewSocksConfig(ptr, 0)
+
+	ptr.protocolLayout.AddWidget(ptr.shadowsocsConfig)
+	ptr.protocolLayout.AddWidget(ptr.vmessConfig)
+	ptr.protocolLayout.AddWidget(ptr.socksConfig)
+
 	actionLayout := widgets.NewQHBoxLayout2(ptr)
 	actionLayout.SetSpacing(20)
 
@@ -69,6 +84,7 @@ func (ptr *ConfigEdit) init() {
 	actionLayout.AddStretch(1)
 
 	ptr.vboxLayout.AddLayout(baseConfigLayout, 1)
+	ptr.vboxLayout.AddLayout(ptr.protocolLayout, 1)
 	ptr.vboxLayout.AddStretch(1)
 	ptr.vboxLayout.AddLayout(actionLayout, 0)
 
@@ -81,9 +97,7 @@ func (ptr *ConfigEdit) initConnect() {
 		ptr.ParentWidget().ParentWidget().SetFixedSize2(350, 600)
 	})
 
-	ptr.protocolComboBox.ConnectCurrentIndexChanged2(func(text string) {
-
-	})
+	ptr.protocolComboBox.ConnectCurrentIndexChanged(ptr.protocolLayout.SetCurrentIndex)
 }
 
 func (ptr *ConfigEdit) ConfigChange(name string) {
