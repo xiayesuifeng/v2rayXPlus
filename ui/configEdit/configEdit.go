@@ -219,7 +219,26 @@ func (ptr *ConfigEdit) saveConfig() error {
 		ptr.conf.OutboundConfig.Settings = settings
 		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
 	case 2:
-
+		ptr.conf.OutboundConfig.Protocol = "vmess"
+		socksConfig, err := conf.NewSocksClientConfig(ptr.conf.OutboundConfig.Settings)
+		if err != nil {
+			return err
+		}
+		if len(socksConfig.Servers) > 0 {
+			socksConfig.Servers[0].Address = ptr.serviceEdit.Text()
+			port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
+			if err != nil {
+				return err
+			}
+			socksConfig.Servers[0].Port = uint16(port)
+			ptr.socksConfig.SaveConf(socksConfig.Servers[0])
+		}
+		settings, err := json.Marshal(socksConfig)
+		if err != nil {
+			return err
+		}
+		ptr.conf.OutboundConfig.Settings = settings
+		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
 	}
 	return nil
 }
