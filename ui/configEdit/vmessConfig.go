@@ -45,3 +45,11 @@ func (ptr *VmessConfig) ParseConf(config *conf.VMessOutboundTarget) {
 		ptr.alterIdLineEdit.SetText(alterId)
 	}
 }
+
+func (ptr *VmessConfig) SaveConf(config *conf.VMessOutboundTarget) {
+	if len(config.Users) > 0 {
+		config.Users[0].ID = ptr.uuidLineEdit.Text()
+		port, _ := strconv.ParseUint(ptr.alterIdLineEdit.Text(), 10, 0)
+		config.Users[0].AlterIds = uint16(port)
+	}
+}

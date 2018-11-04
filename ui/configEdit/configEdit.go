@@ -198,6 +198,26 @@ func (ptr *ConfigEdit) saveConfig() error {
 		ptr.conf.OutboundConfig.Settings = settings
 		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
 	case 1:
+		ptr.conf.OutboundConfig.Protocol = "vmess"
+		vmessConf, err := conf.NewVMessOutboundConfig(ptr.conf.OutboundConfig.Settings)
+		if err != nil {
+			return err
+		}
+		if len(vmessConf.Receivers) > 0 {
+			vmessConf.Receivers[0].Address = ptr.serviceEdit.Text()
+			port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
+			if err != nil {
+				return err
+			}
+			vmessConf.Receivers[0].Port = uint16(port)
+			ptr.vmessConfig.SaveConf(vmessConf.Receivers[0])
+		}
+		settings, err := json.Marshal(vmessConf)
+		if err != nil {
+			return err
+		}
+		ptr.conf.OutboundConfig.Settings = settings
+		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
 	case 2:
 
 	}
