@@ -57,3 +57,10 @@ func (ptr *ShadowsocsConfig) ParseConf(config conf.ShadowsocksServer) {
 	ptr.methodComboBox.SetCurrentText(config.Cipher)
 	ptr.otaCheckBox.SetChecked(config.Ota)
 }
+
+func (ptr *ShadowsocsConfig) SaveConf(config *conf.ShadowsocksServer) {
+	config.Email = ptr.emailEdit.Text()
+	config.Password = ptr.passwordEdit.Text()
+	config.Cipher = ptr.methodComboBox.CurrentText()
+	config.Ota = ptr.otaCheckBox.IsChecked()
+}

@@ -1,6 +1,7 @@
 package configEdit
 
 import (
+	"encoding/json"
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
@@ -102,6 +103,14 @@ func (ptr *ConfigEdit) initConnect() {
 		ptr.ParentWidget().ParentWidget().SetFixedSize2(350, 600)
 	})
 
+	ptr.saveButton.ConnectClicked(func(checked bool) {
+		if err := ptr.saveConfig(); err != nil {
+			widgets.QMessageBox_Warning(ptr, "错误", err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		}
+		ptr.SetVisible(false)
+		ptr.ParentWidget().ParentWidget().SetFixedSize2(350, 600)
+	})
+
 	ptr.protocolComboBox.ConnectCurrentIndexChanged(ptr.protocolLayout.SetCurrentIndex)
 }
 
@@ -165,7 +174,32 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 	}
 }
 
-func (ptr *ConfigEdit) saveConfig() {
-	ptr.SetVisible(false)
-	ptr.ParentWidget().ParentWidget().SetFixedSize2(350, 600)
+func (ptr *ConfigEdit) saveConfig() error {
+	switch ptr.protocolLayout.CurrentIndex() {
+	case 0:
+		ptr.conf.OutboundConfig.Protocol = "shadowsocks"
+		shadowsocksConf, err := conf.NewShadowsocksServer(ptr.conf.OutboundConfig.Settings)
+		if err != nil {
+			return err
+		}
+		if len(shadowsocksConf.Servers) > 0 {
+			shadowsocksConf.Servers[0].Address = ptr.serviceEdit.Text()
+			port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
+			if err != nil {
+				return err
+			}
+			shadowsocksConf.Servers[0].Port = uint16(port)
+			ptr.shadowsocsConfig.SaveConf(&shadowsocksConf.Servers[0])
+		}
+		settings, err := json.Marshal(shadowsocksConf)
+		if err != nil {
+			return err
+		}
+		ptr.conf.OutboundConfig.Settings = settings
+		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
+	case 1:
+	case 2:
+
+	}
+	return nil
 }
