@@ -7,30 +7,30 @@ import (
 
 type OutboundConfig struct {
 	Protocol      string          `json:"protocol"`
-	Tag           string          `json:"tag"`
-	Settings      json.RawMessage `json:"settings"`
-	StreamSetting *StreamConfig   `json:"streamSettings"`
-	MuxSettings   *MuxConfig      `json:"mux"`
+	Tag           string          `json:"tag,omitempty"`
+	Settings      json.RawMessage `json:"settings,omitempty"`
+	StreamSetting *StreamConfig   `json:"streamSettings,omitempty"`
+	MuxSettings   *MuxConfig      `json:"mux,omitempty"`
 }
 
 type InboundConfig struct {
 	Port           *uint           `json:"port"`
 	Protocol       string          `json:"protocol"`
-	StreamSetting  *StreamConfig   `json:"streamSettings"`
-	Settings       json.RawMessage `json:"settings"`
-	Tag            string          `json:"tag"`
-	DomainOverride *[]string       `json:"domainOverride"`
+	StreamSetting  *StreamConfig   `json:"streamSettings,omitempty"`
+	Settings       json.RawMessage `json:"settings,omitempty"`
+	Tag            string          `json:"tag,omitempty"`
+	DomainOverride *[]string       `json:"domainOverride,omitempty"`
 }
 
 type SocketConfig struct {
 	Mark   int32  `json:"mark"`
-	TFO    *bool  `json:"tcpFastOpen"`
-	TProxy string `json:"tproxy"`
+	TFO    *bool  `json:"tcpFastOpen,omitempty"`
+	TProxy string `json:"tproxy,omitempty"`
 }
 
 type StreamConfig struct {
-	Security       string        `json:"security"`
-	SocketSettings *SocketConfig `json:"sockopt"`
+	Security       string        `json:"security,omitempty"`
+	SocketSettings *SocketConfig `json:"sockopt,omitempty"`
 }
 
 type MuxConfig struct {
@@ -44,8 +44,8 @@ type V2rayConfig struct {
 	DNSConfig       *DnsConfig       `json:"dns"`
 	InboundConfig   *InboundConfig   `json:"inbound"`
 	OutboundConfig  *OutboundConfig  `json:"outbound"`
-	InboundDetours  []InboundConfig  `json:"inboundDetour"`
-	OutboundDetours []OutboundConfig `json:"outboundDetour"`
+	InboundDetours  []InboundConfig  `json:"inboundDetour,omitempty"`
+	OutboundDetours []OutboundConfig `json:"outboundDetour,omitempty"`
 }
 
 func ParseV2ray(conf string) (*V2rayConfig, error) {
