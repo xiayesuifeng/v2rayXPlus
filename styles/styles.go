@@ -1,6 +1,9 @@
 package styles
 
-import _ "gitlab.com/xiayesuifeng/v2rayxplus/resources"
+import (
+	_ "gitlab.com/xiayesuifeng/v2rayxplus/resources"
+	"strings"
+)
 
 const EditButton string = `
 QPushButton[flat="true"] {
@@ -10,16 +13,16 @@ QPushButton[flat="true"] {
 }
 
 QPushButton {
-  border-image: url(":/resources/outline-edit-24px.svg");
+  border-image: url(":/resources/{theme}/outline-edit-24px.svg");
 }
 
 QPushButton::hover {
-  border-image: url(":/resources/outline-edit-24px.svg");
+  border-image: url(":/resources/{theme}/outline-edit-24px.svg");
   background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
-  border-image: url(":/resources/outline-edit-24px.svg");
+  border-image: url(":/resources/{theme}/outline-edit-24px.svg");
   background-color: rgba(255, 255, 255, 0.3);
 }`
 
@@ -31,16 +34,16 @@ QPushButton[flat="true"] {
 }
 
 QPushButton {
-  border-image: url(":/resources/outline-close-24px.svg");
+  border-image: url(":/resources/{theme}/outline-close-24px.svg");
 }
 
 QPushButton::hover {
-  border-image: url(":/resources/outline-close-24px.svg");
+  border-image: url(":/resources/{theme}/outline-close-24px.svg");
   background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
-  border-image: url(":/resources/outline-close-24px.svg");
+  border-image: url(":/resources/{theme}/outline-close-24px.svg");
   background-color: rgba(255, 255, 255, 0.3);
 }`
 
@@ -56,17 +59,17 @@ QPushButton {
 }
 
 QPushButton {
-  background-image: url(":/resources/outline-done-24px.svg");
+  background-image: url(":/resources/{theme}/outline-done-24px.svg");
   background-color: rgb(255, 255, 255);
 }
 
 QPushButton::hover {
-  background-image: url(":/resources/outline-done-24px.svg");
+  background-image: url(":/resources/{theme}/outline-done-24px.svg");
   background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
-  background-image: url(":/resources/outline-done-24px.svg");
+  background-image: url(":/resources/{theme}/outline-done-24px.svg");
   background-image: rgba(255, 255, 255, 0.3);
 }`
 
@@ -81,17 +84,17 @@ QPushButton {
 }
 
 QPushButton {
-  background-image: url(":/resources/outline-close-24px.svg");
+  background-image: url(":/resources/{theme}/outline-close-24px.svg");
   background-color: rgb(255, 255, 255);
 }
 
 QPushButton::hover {
-  background-image: url(":/resources/outline-close-24px.svg");
+  background-image: url(":/resources/{theme}/outline-close-24px.svg");
   background-color: rgba(255, 255, 255, 0.5);
 }
 
 QPushButton::pressed {
-  background-image: url(":/resources/outline-close-24px.svg");
+  background-image: url(":/resources/{theme}/outline-close-24px.svg");
   background-color: rgba(255, 255, 255, 0.3);
 }`
 
@@ -106,7 +109,7 @@ QPushButton {
 }
 
 QPushButton::checked {
-  background-image: url(":/resources/outline-done-24px.svg");
+  background-image: url(":/resources/{theme}/outline-done-24px.svg");
 }
 
 QPushButton::hover {
@@ -162,3 +165,7 @@ QPushButton::pressed {
   border-image: url(":/resources/rochet_start.png");
   background-color: rgba(255, 255, 255, 0.3);
 }`
+
+func GetStyleSheet(qss string) string {
+	return strings.Replace(qss, "{theme}", "dark", -1)
+}

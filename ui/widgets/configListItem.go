@@ -23,7 +23,7 @@ type ConfigListItem struct {
 func (ptr *ConfigListItem) init() {
 	ptr.SetFixedSize2(300, 40)
 	ptr.SetCheckable(true)
-	ptr.SetStyleSheet(styles.ConfigListItem)
+	ptr.SetStyleSheet(styles.GetStyleSheet(styles.ConfigListItem))
 	ptr.SetFocusPolicy(core.Qt__NoFocus)
 
 	ptr.toolFrame = widgets.NewQFrame(ptr, 0)
@@ -36,11 +36,11 @@ func (ptr *ConfigListItem) init() {
 
 	ptr.editButton = widgets.NewQPushButton(ptr.toolFrame)
 	ptr.editButton.SetFixedSize2(24, 24)
-	ptr.editButton.SetStyleSheet(styles.EditButton)
+	ptr.editButton.SetStyleSheet(styles.GetStyleSheet(styles.EditButton))
 
 	ptr.removeButton = widgets.NewQPushButton(ptr.toolFrame)
 	ptr.removeButton.SetFixedSize2(24, 24)
-	ptr.removeButton.SetStyleSheet(styles.RemoveButton)
+	ptr.removeButton.SetStyleSheet(styles.GetStyleSheet(styles.RemoveButton))
 
 	toolLayout.AddWidget(ptr.editButton, 0, core.Qt__AlignRight)
 	toolLayout.AddWidget(ptr.removeButton, 0, core.Qt__AlignRight)

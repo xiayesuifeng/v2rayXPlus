@@ -81,8 +81,8 @@ func (ptr *ConfigEdit) init() {
 	ptr.saveButton.SetFixedSize2(45, 45)
 	ptr.cancelButton.SetFixedSize2(45, 45)
 
-	ptr.saveButton.SetStyleSheet(styles.SaveButton)
-	ptr.cancelButton.SetStyleSheet(styles.CancelButton)
+	ptr.saveButton.SetStyleSheet(styles.GetStyleSheet(styles.SaveButton))
+	ptr.cancelButton.SetStyleSheet(styles.GetStyleSheet(styles.CancelButton))
 
 	actionLayout.AddStretch(1)
 	actionLayout.AddWidget(ptr.saveButton, 0, core.Qt__AlignCenter)
