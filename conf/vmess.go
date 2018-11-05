@@ -5,7 +5,7 @@ import "encoding/json"
 type VMessAccount struct {
 	ID       string `json:"id"`
 	AlterIds uint16 `json:"alterId"`
-	Security string `json:"security"`
+	Security string `json:"security,omitempty"`
 }
 
 type VMessOutboundTarget struct {

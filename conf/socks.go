@@ -19,7 +19,7 @@ type SocksServerConfig struct {
 type SocksRemoteConfig struct {
 	Address string         `json:"address"`
 	Port    uint16         `json:"port"`
-	Users   []SocksAccount `json:"users"`
+	Users   []SocksAccount `json:"users,omitempty"`
 }
 type SocksClientConfig struct {
 	Servers []*SocksRemoteConfig `json:"servers"`

@@ -9,7 +9,7 @@ type ShadowsocksServer struct {
 	Port     uint16 `json:"port"`
 	Cipher   string `json:"method"`
 	Password string `json:"password"`
-	Email    string `json:"email"`
+	Email    string `json:"email,omitempty"`
 	Ota      bool   `json:"ota"`
 	Level    byte   `json:"level"`
 }
