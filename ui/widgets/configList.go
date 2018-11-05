@@ -28,7 +28,7 @@ func (ptr *ConfigList) init() {
 
 	ptr.buttonGroup = widgets.NewQButtonGroup(ptr)
 
-	infos, err := ioutil.ReadDir(conf.ConfigPath)
+	infos, err := ioutil.ReadDir(conf.V2rayConfigPath)
 	if err == nil {
 		for _, info := range infos {
 			if !info.IsDir() && strings.HasSuffix(info.Name(), ".json") {

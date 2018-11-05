@@ -129,7 +129,7 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 	ptr.confName = name
 
 	var err error
-	ptr.conf, err = conf.ParseV2ray(path.Join(conf.ConfigPath, name+".json"))
+	ptr.conf, err = conf.ParseV2ray(path.Join(conf.V2rayConfigPath, name+".json"))
 	if err != nil {
 		log.Println(err)
 	}
@@ -197,7 +197,7 @@ func (ptr *ConfigEdit) saveConfig() error {
 			return err
 		}
 		ptr.conf.OutboundConfig.Settings = settings
-		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
+		return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 	case 1:
 		ptr.conf.OutboundConfig.Protocol = "vmess"
 		vmessConf, err := conf.NewVMessOutboundConfig(ptr.conf.OutboundConfig.Settings)
@@ -219,7 +219,7 @@ func (ptr *ConfigEdit) saveConfig() error {
 			return err
 		}
 		ptr.conf.OutboundConfig.Settings = settings
-		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
+		return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 	case 2:
 		ptr.conf.OutboundConfig.Protocol = "socks"
 		socksConfig, err := conf.NewSocksClientConfig(ptr.conf.OutboundConfig.Settings)
@@ -241,7 +241,7 @@ func (ptr *ConfigEdit) saveConfig() error {
 			return err
 		}
 		ptr.conf.OutboundConfig.Settings = settings
-		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
+		return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 	}
 	return nil
 }

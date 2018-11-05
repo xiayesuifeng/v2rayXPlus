@@ -28,10 +28,11 @@ func init() {
 	if err != nil {
 		log.Panicln(err)
 	}
+	conf.V2rayConfigPath = conf.ConfigPath + "/v2ray"
 
-	if _, err := os.Stat(conf.ConfigPath); err != nil {
+	if _, err := os.Stat(conf.V2rayConfigPath); err != nil {
 		if os.IsNotExist(err) {
-			if err := os.MkdirAll(conf.ConfigPath, 0755); err != nil {
+			if err := os.MkdirAll(conf.V2rayConfigPath, 0755); err != nil {
 				log.Panicln("config dir create failure")
 			}
 		}
