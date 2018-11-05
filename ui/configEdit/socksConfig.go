@@ -51,8 +51,9 @@ func (ptr *SocksConfig) ParseConf(config *conf.SocksRemoteConfig) {
 }
 
 func (ptr *SocksConfig) SaveConf(config *conf.SocksRemoteConfig) {
-	if len(config.Users) > 0 {
-		config.Users[0].Username = ptr.userEdit.Text()
-		config.Users[0].Password = ptr.passEdit.Text()
+	if len(config.Users) == 0 {
+		config.Users = append(config.Users, conf.SocksAccount{})
 	}
+	config.Users[0].Username = ptr.userEdit.Text()
+	config.Users[0].Password = ptr.passEdit.Text()
 }

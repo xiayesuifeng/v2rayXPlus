@@ -47,9 +47,10 @@ func (ptr *VmessConfig) ParseConf(config *conf.VMessOutboundTarget) {
 }
 
 func (ptr *VmessConfig) SaveConf(config *conf.VMessOutboundTarget) {
-	if len(config.Users) > 0 {
-		config.Users[0].ID = ptr.uuidLineEdit.Text()
-		port, _ := strconv.ParseUint(ptr.alterIdLineEdit.Text(), 10, 0)
-		config.Users[0].AlterIds = uint16(port)
+	if len(config.Users) == 0 {
+		config.Users = append(config.Users, conf.VMessAccount{})
 	}
+	config.Users[0].ID = ptr.uuidLineEdit.Text()
+	port, _ := strconv.ParseUint(ptr.alterIdLineEdit.Text(), 10, 0)
+	config.Users[0].AlterIds = uint16(port)
 }

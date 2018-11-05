@@ -182,15 +182,16 @@ func (ptr *ConfigEdit) saveConfig() error {
 		if err != nil {
 			return err
 		}
-		if len(shadowsocksConf.Servers) > 0 {
-			shadowsocksConf.Servers[0].Address = ptr.serviceEdit.Text()
-			port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
-			if err != nil {
-				return err
-			}
-			shadowsocksConf.Servers[0].Port = uint16(port)
-			ptr.shadowsocsConfig.SaveConf(&shadowsocksConf.Servers[0])
+		if len(shadowsocksConf.Servers) == 0 {
+			shadowsocksConf.Servers = append(shadowsocksConf.Servers, conf.ShadowsocksServer{})
 		}
+		shadowsocksConf.Servers[0].Address = ptr.serviceEdit.Text()
+		port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
+		if err != nil {
+			return err
+		}
+		shadowsocksConf.Servers[0].Port = uint16(port)
+		ptr.shadowsocsConfig.SaveConf(&shadowsocksConf.Servers[0])
 		settings, err := json.Marshal(shadowsocksConf)
 		if err != nil {
 			return err
@@ -203,15 +204,16 @@ func (ptr *ConfigEdit) saveConfig() error {
 		if err != nil {
 			return err
 		}
-		if len(vmessConf.Receivers) > 0 {
-			vmessConf.Receivers[0].Address = ptr.serviceEdit.Text()
-			port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
-			if err != nil {
-				return err
-			}
-			vmessConf.Receivers[0].Port = uint16(port)
-			ptr.vmessConfig.SaveConf(vmessConf.Receivers[0])
+		if len(vmessConf.Receivers) == 0 {
+			vmessConf.Receivers = append(vmessConf.Receivers, &conf.VMessOutboundTarget{})
 		}
+		vmessConf.Receivers[0].Address = ptr.serviceEdit.Text()
+		port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
+		if err != nil {
+			return err
+		}
+		vmessConf.Receivers[0].Port = uint16(port)
+		ptr.vmessConfig.SaveConf(vmessConf.Receivers[0])
 		settings, err := json.Marshal(vmessConf)
 		if err != nil {
 			return err
@@ -219,20 +221,21 @@ func (ptr *ConfigEdit) saveConfig() error {
 		ptr.conf.OutboundConfig.Settings = settings
 		return ptr.conf.Save(path.Join(conf.ConfigPath, ptr.confName+".json"))
 	case 2:
-		ptr.conf.OutboundConfig.Protocol = "vmess"
+		ptr.conf.OutboundConfig.Protocol = "socks"
 		socksConfig, err := conf.NewSocksClientConfig(ptr.conf.OutboundConfig.Settings)
 		if err != nil {
 			return err
 		}
-		if len(socksConfig.Servers) > 0 {
-			socksConfig.Servers[0].Address = ptr.serviceEdit.Text()
-			port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
-			if err != nil {
-				return err
-			}
-			socksConfig.Servers[0].Port = uint16(port)
-			ptr.socksConfig.SaveConf(socksConfig.Servers[0])
+		if len(socksConfig.Servers) == 0 {
+			socksConfig.Servers = append(socksConfig.Servers, &conf.SocksRemoteConfig{})
 		}
+		socksConfig.Servers[0].Address = ptr.serviceEdit.Text()
+		port, err := strconv.ParseUint(ptr.portEdit.Text(), 10, 0)
+		if err != nil {
+			return err
+		}
+		socksConfig.Servers[0].Port = uint16(port)
+		ptr.socksConfig.SaveConf(socksConfig.Servers[0])
 		settings, err := json.Marshal(socksConfig)
 		if err != nil {
 			return err
