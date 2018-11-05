@@ -42,7 +42,9 @@ func (ptr *ConfigList) init() {
 		}
 	}
 
-	ptr.buttonGroup.Buttons()[0].SetChecked(true)
+	if len(ptr.buttonGroup.Buttons()) > 0 {
+		ptr.buttonGroup.Buttons()[0].SetChecked(true)
+	}
 
 	ptr.SetLayout(ptr.vboxLayout)
 
