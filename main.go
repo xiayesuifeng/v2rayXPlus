@@ -65,6 +65,7 @@ func parseConfig() error {
 		if err.Error() == "EOF" {
 			conf.Conf.Theme = "light"
 			conf.Conf.ListerPort = 8102
+			conf.Conf.DnsServers = []string{"8.8.8.8", "8.8.4.4", "localhost"}
 			if err := json.NewEncoder(file).Encode(conf.Conf); err != nil {
 				return err
 			}
