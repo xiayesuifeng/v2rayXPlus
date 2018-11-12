@@ -41,7 +41,7 @@ func (m *MainFrame) init() {
 
 	m.startButton = widgets.NewQPushButton(m)
 	m.startButton.SetFixedSize2(230, 230)
-	m.startButton.SetStyleSheet(styles.StartButton)
+	m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
 
 	vboxLayout.AddSpacing(60)
 	vboxLayout.AddWidget(m.startButton, 0, core.Qt__AlignHCenter)
@@ -70,10 +70,10 @@ func (m *MainFrame) initConnect() {
 	m.startButton.ConnectClicked(func(checked bool) {
 		if m.startButton.WindowTitle() == "on" {
 			m.startButton.SetWindowTitle("off")
-			m.startButton.SetStyleSheet(styles.StopButton)
+			m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StopButton))
 		} else {
 			m.startButton.SetWindowTitle("on")
-			m.startButton.SetStyleSheet(styles.StartButton)
+			m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
 		}
 	})
 

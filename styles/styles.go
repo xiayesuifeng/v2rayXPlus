@@ -130,7 +130,7 @@ QPushButton {
   outline: none;
   color: #eaeaea;
   border-radius: 115px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba({color}, 0.5);
 }
 
 QPushButton {
@@ -153,7 +153,7 @@ QPushButton {
   outline: none;
   color: #eaeaea;
   border-radius: 115px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba({color}, 0.5);
 }
 
 QPushButton {
