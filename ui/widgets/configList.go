@@ -27,8 +27,19 @@ type ConfigList struct {
 }
 
 func (ptr *ConfigList) init() {
-	ptr.vboxLayout = widgets.NewQVBoxLayout2(ptr)
+	mainLayout := widgets.NewQVBoxLayout2(ptr)
+	mainLayout.SetContentsMargins(18, 10, 18, 0)
+
+	scrollArea := widgets.NewQScrollArea(ptr)
+	scrollArea.SetHorizontalScrollBarPolicy(core.Qt__ScrollBarAlwaysOff)
+	scrollArea.SetWidgetResizable(true)
+	scrollArea.SetStyleSheet("background:transparent;border:0px;")
+
+	listFrame := widgets.NewQFrame(scrollArea, 0)
+
+	ptr.vboxLayout = widgets.NewQVBoxLayout2(scrollArea)
 	ptr.vboxLayout.SetSpacing(0)
+	ptr.vboxLayout.SetContentsMargins(0, 0, 0, 0)
 
 	ptr.buttonGroup = widgets.NewQButtonGroup(ptr)
 
@@ -54,10 +65,14 @@ func (ptr *ConfigList) init() {
 		ptr.buttonGroup.Buttons()[0].SetChecked(true)
 	}
 
-	ptr.vboxLayout.AddSpacing(30)
-	ptr.vboxLayout.AddWidget(ptr.addButton, 0, core.Qt__AlignHCenter)
+	mainLayout.AddWidget(scrollArea, 1, 0)
+	mainLayout.AddSpacing(20)
+	mainLayout.AddWidget(ptr.addButton, 0, core.Qt__AlignHCenter)
 
-	ptr.SetLayout(ptr.vboxLayout)
+	scrollArea.SetWidget(listFrame)
+
+	listFrame.SetLayout(ptr.vboxLayout)
+	ptr.SetLayout(mainLayout)
 
 	ptr.initConnect()
 }
@@ -78,7 +93,7 @@ func (ptr *ConfigList) initConnect() {
 		item := NewConfigListItem2(name, ptr)
 		item.ConnectEditConfig(ptr.EditConfig)
 		item.ConnectRemoveConfig(ptr.RemoveConfig)
-		ptr.vboxLayout.InsertWidget(len(ptr.buttonGroup.Buttons()), item, 0, core.Qt__AlignCenter)
+		ptr.vboxLayout.AddWidget(item, 0, core.Qt__AlignCenter)
 		ptr.buttonGroup.AddButton(item, 0)
 
 		item.EditConfig(name)

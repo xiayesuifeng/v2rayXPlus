@@ -56,7 +56,7 @@ func (m *MainFrame) init() {
 	vboxLayout.AddWidget(versionLabel, 0, core.Qt__AlignHCenter)
 	vboxLayout.AddWidget(m.configList, 1, core.Qt__AlignBottom)
 
-	vboxLayout.AddSpacing(60)
+	vboxLayout.AddSpacing(30)
 
 	m.configEdit = configEdit.NewConfigEdit(m, 0)
 
