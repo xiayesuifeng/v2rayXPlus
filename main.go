@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"flag"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
@@ -12,7 +13,22 @@ import (
 	"path/filepath"
 )
 
+var (
+	help   = flag.Bool("h", false, "help")
+	config = flag.String("c", "", "config file")
+)
+
 func main() {
+	flag.Parse()
+	if *help {
+		flag.Usage()
+		os.Exit(0)
+	}
+
+	if *config != "" {
+		os.Exit(0)
+	}
+
 	app := widgets.NewQApplication(len(os.Args), os.Args)
 	app.SetApplicationVersion("0.1.0")
 	app.SetApplicationName("v2rayXPlus")
