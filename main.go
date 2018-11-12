@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
@@ -37,6 +38,10 @@ func init() {
 			}
 		}
 	}
+
+	if err := parseConfig(); err != nil {
+		log.Panicln(err)
+	}
 }
 
 func getConfPath() (string, error) {
@@ -46,4 +51,26 @@ func getConfPath() (string, error) {
 	}
 
 	return filepath.Join(path, ".config/V2rayXPlus"), nil
+}
+
+func parseConfig() error {
+	file, err := os.OpenFile(conf.ConfigPath+"/config.json", os.O_CREATE|os.O_RDWR, 0644)
+	if err != nil {
+		return err
+	}
+
+	conf.Conf = &conf.Config{}
+	err = json.NewDecoder(file).Decode(conf.Conf)
+	if err != nil {
+		if err.Error() == "EOF" {
+			conf.Conf.Theme = "light"
+			if err := json.NewEncoder(file).Encode(conf.Conf); err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	}
+
+	return nil
 }

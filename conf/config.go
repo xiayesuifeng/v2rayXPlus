@@ -2,3 +2,9 @@ package conf
 
 var ConfigPath string
 var V2rayConfigPath string
+
+var Conf *Config
+
+type Config struct {
+	Theme string `json:"theme"`
+}

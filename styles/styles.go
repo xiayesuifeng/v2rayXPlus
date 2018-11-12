@@ -1,9 +1,13 @@
 package styles
 
 import (
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	_ "gitlab.com/xiayesuifeng/v2rayxplus/resources"
 	"strings"
 )
+
+const darkColor string = "255,255,255"
+const lightColor string = "100,100,100"
 
 const EditButton string = `
 QPushButton[flat="true"] {
@@ -60,17 +64,17 @@ QPushButton {
 
 QPushButton {
   background-image: url(":/resources/{theme}/outline-done-24px.svg");
-  background-color: rgb(255, 255, 255);
+  background-color: rgb({color});
 }
 
 QPushButton::hover {
   background-image: url(":/resources/{theme}/outline-done-24px.svg");
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba({color}, 0.5);
 }
 
 QPushButton::pressed {
   background-image: url(":/resources/{theme}/outline-done-24px.svg");
-  background-image: rgba(255, 255, 255, 0.3);
+  background-image: rgba({color}, 0.3);
 }`
 
 const CancelButton string = `
@@ -85,17 +89,17 @@ QPushButton {
 
 QPushButton {
   background-image: url(":/resources/{theme}/outline-close-24px.svg");
-  background-color: rgb(255, 255, 255);
+  background-color: rgb({color});
 }
 
 QPushButton::hover {
   background-image: url(":/resources/{theme}/outline-close-24px.svg");
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba({color}, 0.5);
 }
 
 QPushButton::pressed {
   background-image: url(":/resources/{theme}/outline-close-24px.svg");
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba({color}, 0.3);
 }`
 
 const ConfigListItem string = `
@@ -167,5 +171,12 @@ QPushButton::pressed {
 }`
 
 func GetStyleSheet(qss string) string {
-	return strings.Replace(qss, "{theme}", "dark", -1)
+	if conf.Conf.Theme == "light" {
+		qss = strings.Replace(qss, "{theme}", "dark", -1)
+		qss = strings.Replace(qss, "{color}", darkColor, -1)
+	} else {
+		qss = strings.Replace(qss, "{theme}", "light", -1)
+		qss = strings.Replace(qss, "{color}", lightColor, -1)
+	}
+	return qss
 }
