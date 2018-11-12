@@ -170,6 +170,31 @@ QPushButton::pressed {
   background-color: rgba(255, 255, 255, 0.3);
 }`
 
+const AddButton string = `
+QPushButton {
+  border: 2px;
+  border-radius: 22px;
+  outline: none;
+  color: #eaeaea;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+QPushButton {
+  background-image: url(":/resources/{theme}/outline-add-24px.svg");
+  background-color: rgb({color});
+}
+
+QPushButton::hover {
+  background-image: url(":/resources/{theme}/outline-add-24px.svg");
+  background-color: rgba({color}, 0.5);
+}
+
+QPushButton::pressed {
+  background-image: url(":/resources/{theme}/outline-add-24px.svg");
+  background-color: rgba({color}, 0.3);
+}`
+
 func GetStyleSheet(qss string) string {
 	if conf.Conf.Theme == "light" {
 		qss = strings.Replace(qss, "{theme}", "dark", -1)
