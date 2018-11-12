@@ -64,6 +64,7 @@ func parseConfig() error {
 	if err != nil {
 		if err.Error() == "EOF" {
 			conf.Conf.Theme = "light"
+			conf.Conf.ListerPort = 8102
 			if err := json.NewEncoder(file).Encode(conf.Conf); err != nil {
 				return err
 			}
