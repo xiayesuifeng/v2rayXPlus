@@ -39,11 +39,11 @@ type MuxConfig struct {
 }
 
 type V2rayConfig struct {
-	Port            uint16           `json:"port"`
+	Port            uint16           `json:"port,omitempty"`
 	RouterConfig    *RouterConfig    `json:"routing"`
 	DNSConfig       *DnsConfig       `json:"dns"`
 	InboundConfig   *InboundConfig   `json:"inbound"`
-	OutboundConfig  *OutboundConfig  `json:"outbound"`
+	OutboundConfig  *OutboundConfig  `json:"outbound,omitempty"`
 	InboundDetours  []InboundConfig  `json:"inboundDetour,omitempty"`
 	OutboundDetours []OutboundConfig `json:"outboundDetour,omitempty"`
 }
