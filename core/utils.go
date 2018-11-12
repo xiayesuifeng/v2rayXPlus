@@ -6,16 +6,16 @@ import (
 	"strconv"
 )
 
-func GetConfigName() string {
+func GetConfigName() (name, path string) {
 	for i := 0; ; i++ {
 		tmp := ""
 		if i > 0 {
 			tmp = strconv.FormatInt(int64(i), 10)
 		}
-		name := conf.ConfigPath + "/config" + tmp + ".json"
-		_, err := os.Stat(name)
+		path := conf.ConfigPath + "/v2ray/config" + tmp + ".json"
+		_, err := os.Stat(path)
 		if err != nil && os.IsNotExist(err) {
-			return name
+			return "config" + tmp, path
 		}
 	}
 }
