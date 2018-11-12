@@ -4,6 +4,7 @@ import (
 	"github.com/therecipe/qt/core"
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	core2 "gitlab.com/xiayesuifeng/v2rayxplus/core"
 	"gitlab.com/xiayesuifeng/v2rayxplus/styles"
 	"io/ioutil"
 	"strings"
@@ -64,5 +65,22 @@ func (ptr *ConfigList) init() {
 func (ptr *ConfigList) initConnect() {
 	ptr.buttonGroup.ConnectButtonClicked(func(button *widgets.QAbstractButton) {
 		ptr.ConfigChange(button.Text())
+	})
+
+	ptr.addButton.ConnectClicked(func(checked bool) {
+		v2ray := conf.NewV2rayConfig()
+		name, path := core2.GetConfigName()
+		if err := v2ray.Save(path); err != nil {
+			widgets.QMessageBox_Warning(ptr, "错误", err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+			return
+		}
+
+		item := NewConfigListItem2(name, ptr)
+		item.ConnectEditConfig(ptr.EditConfig)
+		item.ConnectRemoveConfig(ptr.RemoveConfig)
+		ptr.vboxLayout.InsertWidget(len(ptr.buttonGroup.Buttons()), item, 0, core.Qt__AlignCenter)
+		ptr.buttonGroup.AddButton(item, 0)
+
+		item.EditConfig(name)
 	})
 }
