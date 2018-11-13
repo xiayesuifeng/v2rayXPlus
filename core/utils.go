@@ -45,6 +45,43 @@ func GetConfigName() (name, path string) {
 	}
 }
 
+func StartV2rayXPlusSerive(config string) bool {
+	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
+	if err != nil {
+		return false
+	}
+	return StartService("v2rayxplus@" + string(bytes))
+}
+
+func RestartV2rayXPlusSerive(config string) bool {
+	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
+	if err != nil {
+		return false
+	}
+	if !StopService("v2rayxplus@" + string(bytes)) {
+		return false
+	}
+
+	return StartService("v2rayxplus@" + string(bytes))
+}
+
+func StatusV2rayXPlusSerive(config string) (exited, enable bool) {
+	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
+	if err != nil {
+		return false, false
+	}
+
+	return StatusService("v2rayxplus@" + string(bytes))
+}
+
+func StopV2rayXPlusSerive(config string) bool {
+	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
+	if err != nil {
+		return false
+	}
+	return StopService("v2rayxplus@" + string(bytes))
+}
+
 func StartService(service string) bool {
 	return exec.Command("systemctl", "start", service).Run() == nil
 }
