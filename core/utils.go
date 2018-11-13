@@ -2,11 +2,33 @@ package core
 
 import (
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	"io"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 )
+
+func CopyFile(src, target string) error {
+	srcConfig, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer srcConfig.Close()
+
+	targetConfig, err := os.OpenFile(target, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0644)
+	if err != nil {
+		return err
+	}
+	defer targetConfig.Close()
+
+	_, err = io.Copy(targetConfig, srcConfig)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 func GetConfigName() (name, path string) {
 	for i := 0; ; i++ {
