@@ -19,6 +19,8 @@ type ConfigList struct {
 
 	addButton *widgets.QPushButton
 
+	ConfigName string
+
 	_ func() `constructor:"init"`
 
 	_ func(name string) `signal:"configChange"`
@@ -62,7 +64,9 @@ func (ptr *ConfigList) init() {
 	}
 
 	if len(ptr.buttonGroup.Buttons()) > 0 {
-		ptr.buttonGroup.Buttons()[0].SetChecked(true)
+		item := ptr.buttonGroup.Buttons()[0]
+		item.SetChecked(true)
+		ptr.ConfigName = item.Text()
 	}
 
 	mainLayout.AddWidget(scrollArea, 1, 0)
@@ -79,6 +83,7 @@ func (ptr *ConfigList) init() {
 
 func (ptr *ConfigList) initConnect() {
 	ptr.buttonGroup.ConnectButtonClicked(func(button *widgets.QAbstractButton) {
+		ptr.ConfigName = button.Text()
 		ptr.ConfigChange(button.Text())
 	})
 
