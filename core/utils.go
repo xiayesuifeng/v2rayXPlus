@@ -105,7 +105,7 @@ func StatusService(service string) (exited, enable bool) {
 				}
 			}
 		} else if strings.HasPrefix(line, "Active:") {
-			exited = strings.Contains(line, "exited")
+			exited = strings.Contains(line, "exited") || strings.Contains(line, "running")
 		}
 	}
 
