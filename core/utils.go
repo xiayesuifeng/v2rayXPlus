@@ -3,6 +3,7 @@ package core
 import (
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"strconv"
@@ -78,4 +79,24 @@ func StatusService(service string) (exited, enable bool) {
 	}
 
 	return exited, enable
+}
+
+func InitIpTables() {
+	if exited, _ := StatusService("iptables"); !exited {
+		if _, err := os.Stat("/etc/iptable/iptables.rules"); os.IsNotExist(err) {
+			if _, err := os.Stat("/etc/iptable/empty.rules"); err == nil {
+				CopyFile("/etc/iptable/empty.rules", "/etc/iptable/iptables.rules")
+				StartSerive("iptables")
+			}
+		}
+	}
+
+	bytes, err := exec.Command("sysctl", "net.ipv4.ip_forward").CombinedOutput()
+	result := strings.TrimSpace(string(bytes))
+	if err == nil {
+		if strings.HasSuffix(result, "0") {
+			log.Println(string(bytes))
+			exec.Command("sysctl", "net.ipv4.ip_forward=1").Run()
+		}
+	}
 }
