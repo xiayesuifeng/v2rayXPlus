@@ -45,6 +45,8 @@ func StartV2ray(config string) error {
 		StartSerive("v2ray")
 	}
 
+	InitIpTables()
+
 	if err := AddIpTablesRules(); err != nil {
 		return err
 	}

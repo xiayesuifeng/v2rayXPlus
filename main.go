@@ -7,6 +7,7 @@ import (
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	"gitlab.com/xiayesuifeng/v2rayxplus/core"
 	"gitlab.com/xiayesuifeng/v2rayxplus/ui"
 	"log"
 	"os"
@@ -26,6 +27,10 @@ func main() {
 	}
 
 	if *config != "" {
+		if err := core.StartV2ray(*config); err != nil {
+			log.Println(err)
+			os.Exit(1)
+		}
 		os.Exit(0)
 	}
 
