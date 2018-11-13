@@ -45,41 +45,35 @@ func GetConfigName() (name, path string) {
 	}
 }
 
-func StartV2rayXPlusSerive(config string) bool {
-	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
+func SystemEscape(path string) string {
+	bytes, err := exec.Command("systemd-escape", "-p", path).CombinedOutput()
 	if err != nil {
-		return false
+		return ""
 	}
-	return StartService("v2rayxplus@" + string(bytes))
+
+	return strings.TrimSpace(string(bytes))
+}
+
+func StartV2rayXPlusSerive(config string) bool {
+	return StartService("v2rayxplus@" + SystemEscape(conf.V2rayConfigPath+"/"+config+".json"))
 }
 
 func RestartV2rayXPlusSerive(config string) bool {
-	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
-	if err != nil {
-		return false
-	}
-	if !StopService("v2rayxplus@" + string(bytes)) {
+	path := SystemEscape(conf.V2rayConfigPath + "/" + config + ".json")
+
+	if !StopService("v2rayxplus@" + path) {
 		return false
 	}
 
-	return StartService("v2rayxplus@" + string(bytes))
+	return StartService("v2rayxplus@" + path)
 }
 
 func StatusV2rayXPlusSerive(config string) (exited, enable bool) {
-	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
-	if err != nil {
-		return false, false
-	}
-
-	return StatusService("v2rayxplus@" + string(bytes))
+	return StatusService("v2rayxplus@" + SystemEscape(conf.V2rayConfigPath+"/"+config+".json"))
 }
 
 func StopV2rayXPlusSerive(config string) bool {
-	bytes, err := exec.Command("systemd-escape", "-p", conf.V2rayConfigPath+"/"+config+".json").CombinedOutput()
-	if err != nil {
-		return false
-	}
-	return StopService("v2rayxplus@" + string(bytes))
+	return StopService("v2rayxplus@" + SystemEscape(conf.V2rayConfigPath+"/"+config+".json"))
 }
 
 func StartService(service string) bool {
