@@ -73,3 +73,17 @@ iptables -t mangle -A PREROUTING -p udp -j V2RAY_MASK`
 	cmd := exec.Command("bash", "-c", sh)
 	return cmd.Run()
 }
+
+func RemoveIpTablesRules() error {
+	sh := `iptables -t nat -F V2RAY
+iptables -t nat -D PREROUTING -p tcp -j V2RAY
+iptables -t nat -D OUTPUT -p tcp -j V2RAY
+iptables -t nat -X V2RAY
+iptables -t mangle -F V2RAY_MASK
+iptables -t mangle -D PREROUTING -p udp -j V2RAY_MASK
+iptables -t mangle -X V2RAY_MASK
+ip rule del fwmark 1 table 100
+ip route del local 0.0.0.0/0 dev lo table 100`
+	cmd := exec.Command("bash", "-c", sh)
+	return cmd.Run()
+}
