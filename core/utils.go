@@ -45,7 +45,7 @@ func GetConfigName() (name, path string) {
 	}
 }
 
-func StartSerive(service string) bool {
+func StartService(service string) bool {
 	return exec.Command("systemctl", "start", service).Run() == nil
 }
 
@@ -86,7 +86,7 @@ func InitIpTables() {
 		if _, err := os.Stat("/etc/iptable/iptables.rules"); os.IsNotExist(err) {
 			if _, err := os.Stat("/etc/iptable/empty.rules"); err == nil {
 				CopyFile("/etc/iptable/empty.rules", "/etc/iptable/iptables.rules")
-				StartSerive("iptables")
+				StartService("iptables")
 			}
 		}
 	}

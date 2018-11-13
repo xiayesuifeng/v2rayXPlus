@@ -42,7 +42,7 @@ func StartV2ray(config string) error {
 	if exited, _ := StatusService("v2ray"); exited {
 		RestartService("v2ray")
 	} else {
-		StartSerive("v2ray")
+		StartService("v2ray")
 	}
 
 	InitIpTables()
