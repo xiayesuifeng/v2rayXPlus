@@ -25,9 +25,9 @@ add $GOPATH/go/bin to environment variables
 
 > bash
 ```
-go get -t gitlab.com/firerainos/firerain-installer
+go get -t gitlab.com/xiayesuifeng/v2rayxplus
 
-cd $(go env GOPATH)/src/gitlab.com/firerain-installer
+cd $(go env GOPATH)/src/gitlab.com/xiayesuifeng/v2rayxplus
 
 qtrcc desktop ./resources/
 
@@ -36,14 +36,38 @@ qtdeploy build desktop
 
 > fish
 ```
-go get -t gitlab.com/firerainos/firerain-installer
+go get -t gitlab.com/xiayesuifeng/v2rayxplus
 
-cd (go env GOPATH)/src/gitlab.com/firerain-installer
+cd (go env GOPATH)/src/gitlab.com/xiayesuifeng/v2rayxplus
 
 qtrcc desktop ./resources/
 
 qtdeploy build desktop 
 
+```
+
+# Install
+vim /usr/lib/systemd/system/v2rayxplus@.service
+```
+[Unit]
+Description=V2RayXPlus Service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=oneshot
+PIDFile=/var/run/v2rayxplus.pid
+ExecStart=/usr/bin/bash -c "/usr/bin/v2rayxplus -c `systemd-escape -up %i`"
+ExecStop=/usr/bin/v2rayxplus -s
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+sudo cp ./deploy/linux/v2rayxplus /usr/bin
+sudo systemctl daemon-reload
 ```
 
 ## License
