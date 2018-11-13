@@ -19,6 +19,8 @@ type MainFrame struct {
 	startButton *widgets.QPushButton
 
 	configEdit *configEdit.ConfigEdit
+
+	configName string
 }
 
 func NewMainFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *MainFrame {
@@ -41,7 +43,12 @@ func (m *MainFrame) init() {
 
 	m.startButton = widgets.NewQPushButton(m)
 	m.startButton.SetFixedSize2(230, 230)
-	m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
+	if exited, _ := core2.StatusService("v2ray"); exited {
+		m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StopButton))
+		m.startButton.SetWindowTitle("on")
+	} else {
+		m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
+	}
 
 	vboxLayout.AddSpacing(60)
 	vboxLayout.AddWidget(m.startButton, 0, core.Qt__AlignHCenter)
@@ -69,15 +76,28 @@ func (m *MainFrame) init() {
 func (m *MainFrame) initConnect() {
 	m.startButton.ConnectClicked(func(checked bool) {
 		if m.startButton.WindowTitle() == "on" {
-			m.startButton.SetWindowTitle("off")
-			m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StopButton))
+			if core2.StopV2rayXPlusSerive(m.configList.ConfigName) {
+				m.startButton.SetWindowTitle("off")
+				m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
+			}
 		} else {
-			m.startButton.SetWindowTitle("on")
-			m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
+			if core2.StartV2rayXPlusSerive(m.configList.ConfigName) {
+				m.startButton.SetWindowTitle("on")
+				m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StopButton))
+			}
 		}
 	})
 
 	m.configList.ConnectConfigChange(m.configEdit.ConfigChange)
+	m.configList.ConnectConfigChange(func(name string) {
+		if m.startButton.WindowTitle() == "on" {
+			if name != m.configName {
+				core2.StopV2rayXPlusSerive(m.configName)
+				core2.StartV2rayXPlusSerive(name)
+			}
+			m.configName = name
+		}
+	})
 
 	m.configList.ConnectEditConfig(m.configEdit.EditChange)
 
