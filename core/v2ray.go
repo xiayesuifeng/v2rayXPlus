@@ -54,6 +54,16 @@ func StartV2ray(config string) error {
 	return nil
 }
 
+func StopV2ray() error {
+	StopService("v2ray")
+
+	if err := RemoveIpTablesRules(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func AddIpTablesRules() error {
 	sh := `iptables -t nat -N V2RAY
 iptables -t nat -A V2RAY -d 127.0.0.0/8 -j RETURN 

@@ -17,6 +17,7 @@ import (
 var (
 	help   = flag.Bool("h", false, "help")
 	config = flag.String("c", "", "config file")
+	stop   = flag.Bool("s", false, "stop v2ray")
 )
 
 func main() {
@@ -28,6 +29,14 @@ func main() {
 
 	if *config != "" {
 		if err := core.StartV2ray(*config); err != nil {
+			log.Println(err)
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
+
+	if *stop {
+		if err := core.StopV2ray(); err != nil {
 			log.Println(err)
 			os.Exit(1)
 		}
