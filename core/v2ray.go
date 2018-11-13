@@ -3,6 +3,8 @@ package core
 import (
 	"errors"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	"io"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -27,6 +29,27 @@ func GetVension() (string, error) {
 	}
 
 	return strs[1], nil
+}
+
+func CopyConfig(config string) error {
+	targetConfig, err := os.Open(config)
+	if err != nil {
+		return err
+	}
+	defer targetConfig.Close()
+
+	srcConfig, err := os.OpenFile("/etc/v2ray/config.json", os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0644)
+	if err != nil {
+		return err
+	}
+	defer srcConfig.Close()
+
+	_, err = io.Copy(srcConfig, targetConfig)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func AddIpTablesRules() error {
