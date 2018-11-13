@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 var (
@@ -21,7 +22,6 @@ var (
 )
 
 func main() {
-	flag.Parse()
 	if *help {
 		flag.Usage()
 		os.Exit(0)
@@ -54,30 +54,40 @@ func main() {
 }
 
 func init() {
-	var err error
-	conf.ConfigPath, err = getConfPath()
-	if err != nil {
-		log.Panicln(err)
-	}
-	conf.V2rayConfigPath = conf.ConfigPath + "/v2ray"
+	flag.Parse()
 
-	if _, err := os.Stat(conf.V2rayConfigPath); err != nil {
-		if os.IsNotExist(err) {
-			if err := os.MkdirAll(conf.V2rayConfigPath, 0755); err != nil {
-				log.Panicln("config dir create failure")
+	if !*stop {
+		var err error
+		conf.ConfigPath, err = getConfPath()
+		if err != nil {
+			log.Panicln(err)
+		}
+		conf.V2rayConfigPath = conf.ConfigPath + "/v2ray"
+
+		if _, err := os.Stat(conf.V2rayConfigPath); err != nil {
+			if os.IsNotExist(err) {
+				if err := os.MkdirAll(conf.V2rayConfigPath, 0755); err != nil {
+					log.Panicln("config dir create failure")
+				}
 			}
 		}
-	}
 
-	if err := parseConfig(); err != nil {
-		log.Panicln(err)
+		if err := parseConfig(); err != nil {
+			log.Panicln(err)
+		}
 	}
 }
 
 func getConfPath() (string, error) {
-	path := os.Getenv("HOME")
-	if path == "" {
-		return "", errors.New("get home failure")
+	path := ""
+	if os.Getuid() == 0 && *config != "" {
+		tmp := *config
+		path = tmp[:strings.Index(tmp, ".config")]
+	} else {
+		path = os.Getenv("HOME")
+		if path == "" {
+			return "", errors.New("get home failure")
+		}
 	}
 
 	return filepath.Join(path, ".config/V2rayXPlus"), nil
