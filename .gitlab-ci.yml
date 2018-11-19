@@ -1,0 +1,35 @@
+image: registry.gitlab.com/xiayesuifeng/arch-go-qt:latest
+
+before_script:
+  - export GOPATH=~/go
+  - export PATH=$PATH:~/go/bin
+  - export QT_PKG_CONFIG=true
+  - export CGO_CXXFLAGS_ALLOW=".*"
+  - export CGO_LDFLAGS_ALLOW=".*"
+  - export CGO_CFLAGS_ALLOW=".*"
+
+stages:
+  - build
+  - test
+
+run-build:
+  stage: build
+  script:
+    - go get -d gitlab.com/xiayesuifeng/v2rayxplus
+    - cd $GOPATH/src/gitlab.com/xiayesuifeng/v2rayxplus
+    - qtrcc desktop ./resources/
+    - qtdeploy build desktop
+    - mkdir -p $CI_PROJECT_DIR/build
+    - mv deploy/linux/v2rayxplus $CI_PROJECT_DIR/build/
+
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/build/*
+
+test:
+  script:
+    - go get -d gitlab.com/xiayesuifeng/v2rayxplus
+    - cd $GOPATH/src/gitlab.com/xiayesuifeng/v2rayxplus
+    - qtrcc desktop ./resources/
+    - qtdeploy build desktop
+    - ls -l deploy/linux/
