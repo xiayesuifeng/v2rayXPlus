@@ -21,7 +21,7 @@
 
 add $GOPATH/go/bin to environment variables
 
-## Build
+## Build or [v2rayxplus.zip](https://gitlab.com/xiayesuifeng/v2rayxplus/builds/artifacts/master/download?job=run-build)
 
 > bash
 ```
@@ -72,4 +72,4 @@ sudo systemctl daemon-reload
 
 ## License
 
-goblog is licensed under [GPLv3](LICENSE).
+v2rayXPlus is licensed under [GPLv3](LICENSE).
