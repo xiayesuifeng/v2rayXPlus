@@ -47,7 +47,7 @@ qtdeploy build desktop
 ```
 
 # Install
-vim /usr/lib/systemd/system/v2rayxplus@.service
+vim /usr/lib/systemd/system/v2rayxplus.service
 ```
 [Unit]
 Description=V2RayXPlus Service
@@ -56,9 +56,10 @@ Wants=network.target
 
 [Service]
 Type=oneshot
-PIDFile=/var/run/v2rayxplus.pid
-ExecStart=/usr/bin/bash -c "/usr/bin/v2rayxplus -c `systemd-escape -up %i`"
-ExecStop=/usr/bin/v2rayxplus -s
+ExecStart=/usr/bin/v2rayxplus -start
+ExecStop=/usr/bin/v2rayxplus -stop
+ExecStartPre=/usr/bin/systemctl start v2ray.service
+ExecStopPost=/usr/bin/systemctl stop v2ray.service
 RemainAfterExit=yes
 
 [Install]
