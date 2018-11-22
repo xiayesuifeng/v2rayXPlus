@@ -12,13 +12,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 var (
-	help   = flag.Bool("h", false, "help")
-	config = flag.String("c", "", "config file")
-	stop   = flag.Bool("s", false, "stop v2ray")
+	help  = flag.Bool("help", false, "help")
+	start = flag.Bool("start", false, "start v2ray")
+	stop  = flag.Bool("stop", false, "stop v2ray")
 )
 
 func main() {
@@ -27,8 +26,8 @@ func main() {
 		os.Exit(0)
 	}
 
-	if *config != "" {
-		if err := core.StartV2ray(*config); err != nil {
+	if *start {
+		if err := core.StartV2ray(); err != nil {
 			log.Println(err)
 			os.Exit(1)
 		}
@@ -56,7 +55,7 @@ func main() {
 func init() {
 	flag.Parse()
 
-	if !*stop {
+	if !*stop && !*start {
 		var err error
 		conf.ConfigPath, err = getConfPath()
 		if err != nil {
@@ -76,18 +75,16 @@ func init() {
 			log.Panicln(err)
 		}
 	}
+
+	if *start {
+		conf.Conf = &conf.Config{}
+	}
 }
 
 func getConfPath() (string, error) {
-	path := ""
-	if os.Getuid() == 0 && *config != "" {
-		tmp := *config
-		path = tmp[:strings.Index(tmp, ".config")]
-	} else {
-		path = os.Getenv("HOME")
-		if path == "" {
-			return "", errors.New("get home failure")
-		}
+	path := os.Getenv("HOME")
+	if path == "" {
+		return "", errors.New("get home failure")
 	}
 
 	return filepath.Join(path, ".config/V2rayXPlus"), nil

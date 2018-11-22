@@ -43,7 +43,7 @@ func (m *MainFrame) init() {
 
 	m.startButton = widgets.NewQPushButton(m)
 	m.startButton.SetFixedSize2(230, 230)
-	if exited, _ := core2.StatusService("v2ray"); exited {
+	if exited, _ := core2.StatusV2rayXPlusSerive(); exited {
 		m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StopButton))
 		m.startButton.SetWindowTitle("on")
 	} else {
@@ -76,7 +76,7 @@ func (m *MainFrame) init() {
 func (m *MainFrame) initConnect() {
 	m.startButton.ConnectClicked(func(checked bool) {
 		if m.startButton.WindowTitle() == "on" {
-			if core2.StopV2rayXPlusSerive(m.configList.ConfigName) {
+			if core2.StopV2rayXPlusSerive() {
 				m.startButton.SetWindowTitle("off")
 				m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
 			}
@@ -92,8 +92,7 @@ func (m *MainFrame) initConnect() {
 	m.configList.ConnectConfigChange(func(name string) {
 		if m.startButton.WindowTitle() == "on" {
 			if name != m.configName {
-				core2.StopV2rayXPlusSerive(m.configName)
-				core2.StartV2rayXPlusSerive(name)
+				core2.RestartV2rayXPlusSerive(name)
 			}
 			m.configName = name
 		}

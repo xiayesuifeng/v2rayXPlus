@@ -45,35 +45,41 @@ func GetConfigName() (name, path string) {
 	}
 }
 
-func SystemEscape(path string) string {
-	bytes, err := exec.Command("systemd-escape", "-p", path).CombinedOutput()
+func CopyConfigToEtc(config string) bool {
+	su, err := exec.LookPath("kdesu")
 	if err != nil {
-		return ""
+		su, err = exec.LookPath("pkexec")
+		if err != nil {
+			return false
+		}
 	}
 
-	return strings.TrimSpace(string(bytes))
+	cmd := exec.Command(su, "cp", conf.V2rayConfigPath+"/"+config+".json", "/etc/v2ray/config.json")
+	_, err = cmd.CombinedOutput()
+	return err == nil
 }
 
 func StartV2rayXPlusSerive(config string) bool {
-	return StartService("v2rayxplus@" + SystemEscape(conf.V2rayConfigPath+"/"+config+".json"))
+	CopyConfigToEtc(config)
+	return StartService("v2rayxplus")
 }
 
 func RestartV2rayXPlusSerive(config string) bool {
-	path := SystemEscape(conf.V2rayConfigPath + "/" + config + ".json")
+	CopyConfigToEtc(config)
 
-	if !StopService("v2rayxplus@" + path) {
+	if !StopService("v2rayxplus") {
 		return false
 	}
 
-	return StartService("v2rayxplus@" + path)
+	return StartService("v2rayxplus")
 }
 
-func StatusV2rayXPlusSerive(config string) (exited, enable bool) {
-	return StatusService("v2rayxplus@" + SystemEscape(conf.V2rayConfigPath+"/"+config+".json"))
+func StatusV2rayXPlusSerive() (exited, enable bool) {
+	return StatusService("v2rayxplus")
 }
 
-func StopV2rayXPlusSerive(config string) bool {
-	return StopService("v2rayxplus@" + SystemEscape(conf.V2rayConfigPath+"/"+config+".json"))
+func StopV2rayXPlusSerive() bool {
+	return StopService("v2rayxplus")
 }
 
 func StartService(service string) bool {
