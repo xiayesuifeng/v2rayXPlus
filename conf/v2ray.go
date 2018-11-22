@@ -114,7 +114,7 @@ func NewV2rayConfig() *V2rayConfig {
 
 	v2ray.DNSConfig = &DnsConfig{Servers: Conf.DnsServers}
 	v2ray.InboundConfig = dokodemoConfig
-	v2ray.OutboundConfig = &OutboundConfig{Settings: []byte("{}")}
+	v2ray.OutboundConfig = &OutboundConfig{Settings: []byte("{}"), StreamSetting: &StreamConfig{SocketSettings: &SocketConfig{Mark: 255}}}
 	v2ray.OutboundDetours = append(v2ray.OutboundDetours, freedomConfig)
 	v2ray.RouterConfig = routerConfig
 
