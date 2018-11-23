@@ -3,6 +3,7 @@
 
 > 使用go写的v2ray gui客户端
 
+[![pipeline status](https://gitlab.com/xiayesuifeng/v2rayxplus/badges/master/pipeline.svg)](https://gitlab.com/xiayesuifeng/v2rayxplus/commits/master)
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/xiayesuifeng/v2rayxplus)](https://goreportcard.com/report/gitlab.com/xiayesuifeng/v2rayxplus)
 [![GoDoc](https://godoc.org/gitlab.com/xiayesuifeng/v2rayxplus?status.svg)](https://godoc.org/gitlab.com/xiayesuifeng/v2rayxplus)
 [![Sourcegraph](https://sourcegraph.com/gitlab.com/xiayesuifeng/v2rayxplus/-/badge.svg)](https://sourcegraph.com/gitlab.com/xiayesuifeng/v2rayxplus)
@@ -21,7 +22,7 @@
 
 add $GOPATH/go/bin to environment variables
 
-## Build or [v2rayxplus.zip](https://gitlab.com/xiayesuifeng/v2rayxplus/builds/artifacts/master/download?job=run-build)
+## Build or [v2rayxplus.zip](https://gitlab.com/xiayesuifeng/v2rayxplus/builds/artifacts/master/download?job=run-build) (qt5.11)
 
 > bash
 ```
