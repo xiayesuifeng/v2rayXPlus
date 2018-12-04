@@ -75,12 +75,7 @@ func StartV2rayXPlusSerive(config string) bool {
 
 func RestartV2rayXPlusSerive(config string) bool {
 	CopyConfigToEtc(config)
-
-	if !StopService("v2rayxplus") {
-		return false
-	}
-
-	return StartService("v2rayxplus")
+	return RestartService("v2rayxplus")
 }
 
 func StatusV2rayXPlusSerive() (exited, enable bool) {
