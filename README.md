@@ -18,6 +18,7 @@
 
 ## Install therecipe/qt
 
+[https://blog.firerain.me/article/6](https://blog.firerain.me/article/6) or
 [therecipe/qt install](https://github.com/therecipe/qt/wiki/Installation)
 
 add $GOPATH/go/bin to environment variables
