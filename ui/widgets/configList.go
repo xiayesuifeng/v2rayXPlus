@@ -7,6 +7,7 @@ import (
 	core2 "gitlab.com/xiayesuifeng/v2rayxplus/core"
 	"gitlab.com/xiayesuifeng/v2rayxplus/styles"
 	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -80,6 +81,10 @@ func (ptr *ConfigList) initConnect() {
 		item := NewConfigListItem2(name, ptr)
 		item.ConnectEditConfig(ptr.EditConfig)
 		item.ConnectRemoveConfig(ptr.RemoveConfig)
+		item.ConnectRemoveConfig(func(name string) {
+			ptr.removeConfig(item, name)
+		})
+
 		ptr.vboxLayout.AddWidget(item, 0, core.Qt__AlignCenter)
 		ptr.buttonGroup.AddButton(item, 0)
 
@@ -100,6 +105,9 @@ func (ptr *ConfigList) scanConfList() {
 				tmp := NewConfigListItem2(name, ptr)
 				tmp.ConnectEditConfig(ptr.EditConfig)
 				tmp.ConnectRemoveConfig(ptr.RemoveConfig)
+				tmp.ConnectRemoveConfig(func(name string) {
+					ptr.removeConfig(tmp, name)
+				})
 				ptr.vboxLayout.AddWidget(tmp, 0, core.Qt__AlignCenter)
 				ptr.buttonGroup.AddButton(tmp, 0)
 			}
@@ -118,4 +126,11 @@ func (ptr *ConfigList) cleanConfList() {
 		ptr.buttonGroup.RemoveButton(button)
 		ptr.vboxLayout.RemoveWidget(button)
 	}
+}
+
+func (ptr *ConfigList) removeConfig(item *ConfigListItem, name string) {
+	ptr.buttonGroup.RemoveButton(item)
+	ptr.vboxLayout.RemoveWidget(item)
+	item.DestroyConfigListItem()
+	os.Remove(conf.V2rayConfigPath + "/" + name + ".json")
 }

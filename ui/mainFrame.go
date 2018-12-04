@@ -103,4 +103,10 @@ func (m *MainFrame) initConnect() {
 	m.configList.ConnectEditConfig(func(name string) {
 		m.ParentWidget().SetFixedSize(core.NewQSize2(1050, 600))
 	})
+
+	m.configList.ConnectRemoveConfig(func(name string) {
+		if m.configName == name {
+			core2.StopV2rayXPlusSerive()
+		}
+	})
 }
