@@ -45,17 +45,26 @@ func GetConfigName() (name, path string) {
 	}
 }
 
-func CopyConfigToEtc(config string) bool {
+func GetSu() string {
 	su, err := exec.LookPath("kdesu")
 	if err != nil {
 		su, err = exec.LookPath("pkexec")
 		if err != nil {
-			return false
+			return ""
 		}
 	}
 
+	return su
+}
+
+func CopyConfigToEtc(config string) bool {
+	su := GetSu()
+	if su == "" {
+		return false
+	}
+
 	cmd := exec.Command(su, "cp", conf.V2rayConfigPath+"/"+config+".json", "/etc/v2ray/config.json")
-	_, err = cmd.CombinedOutput()
+	_, err := cmd.CombinedOutput()
 	return err == nil
 }
 
