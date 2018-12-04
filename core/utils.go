@@ -92,15 +92,42 @@ func StopV2rayXPlusSerive() bool {
 }
 
 func StartService(service string) bool {
-	return exec.Command("systemctl", "start", service).Run() == nil
+	if os.Getuid() != 0 {
+		su := GetSu()
+		if su == "" {
+			return false
+		}
+
+		return exec.Command(su, "systemctl", "start", service).Run() == nil
+	} else {
+		return exec.Command("systemctl", "start", service).Run() == nil
+	}
 }
 
 func RestartService(service string) bool {
-	return exec.Command("systemctl", "restart", service).Run() == nil
+	if os.Getuid() != 0 {
+		su := GetSu()
+		if su == "" {
+			return false
+		}
+
+		return exec.Command(su, "systemctl", "restart", service).Run() == nil
+	} else {
+		return exec.Command("systemctl", "restart", service).Run() == nil
+	}
 }
 
 func StopService(service string) bool {
-	return exec.Command("systemctl", "stop", service).Run() == nil
+	if os.Getuid() != 0 {
+		su := GetSu()
+		if su == "" {
+			return false
+		}
+
+		return exec.Command(su, "systemctl", "stop", service).Run() == nil
+	} else {
+		return exec.Command("systemctl", "stop", service).Run() == nil
+	}
 }
 
 func StatusService(service string) (exited, enable bool) {
