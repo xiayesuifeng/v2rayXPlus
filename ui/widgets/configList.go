@@ -49,26 +49,6 @@ func (ptr *ConfigList) init() {
 	ptr.addButton.SetFixedSize2(45, 45)
 	ptr.addButton.SetStyleSheet(styles.GetStyleSheet(styles.AddButton))
 
-	infos, err := ioutil.ReadDir(conf.V2rayConfigPath)
-	if err == nil {
-		for _, info := range infos {
-			if !info.IsDir() && strings.HasSuffix(info.Name(), ".json") {
-				name := strings.Split(info.Name(), ".json")[0]
-				tmp := NewConfigListItem2(name, ptr)
-				tmp.ConnectEditConfig(ptr.EditConfig)
-				tmp.ConnectRemoveConfig(ptr.RemoveConfig)
-				ptr.vboxLayout.AddWidget(tmp, 0, core.Qt__AlignCenter)
-				ptr.buttonGroup.AddButton(tmp, 0)
-			}
-		}
-	}
-
-	if len(ptr.buttonGroup.Buttons()) > 0 {
-		item := ptr.buttonGroup.Buttons()[0]
-		item.SetChecked(true)
-		ptr.ConfigName = item.Text()
-	}
-
 	mainLayout.AddWidget(scrollArea, 1, 0)
 	mainLayout.AddSpacing(20)
 	mainLayout.AddWidget(ptr.addButton, 0, core.Qt__AlignHCenter)
@@ -77,6 +57,8 @@ func (ptr *ConfigList) init() {
 
 	listFrame.SetLayout(ptr.vboxLayout)
 	ptr.SetLayout(mainLayout)
+
+	ptr.scanConfList()
 
 	ptr.initConnect()
 }
@@ -103,4 +85,37 @@ func (ptr *ConfigList) initConnect() {
 
 		item.EditConfig(name)
 	})
+}
+
+func (ptr *ConfigList) scanConfList() {
+	if len(ptr.buttonGroup.Buttons()) > 0 {
+		ptr.cleanConfList()
+	}
+
+	infos, err := ioutil.ReadDir(conf.V2rayConfigPath)
+	if err == nil {
+		for _, info := range infos {
+			if !info.IsDir() && strings.HasSuffix(info.Name(), ".json") {
+				name := strings.Split(info.Name(), ".json")[0]
+				tmp := NewConfigListItem2(name, ptr)
+				tmp.ConnectEditConfig(ptr.EditConfig)
+				tmp.ConnectRemoveConfig(ptr.RemoveConfig)
+				ptr.vboxLayout.AddWidget(tmp, 0, core.Qt__AlignCenter)
+				ptr.buttonGroup.AddButton(tmp, 0)
+			}
+		}
+	}
+
+	if len(ptr.buttonGroup.Buttons()) > 0 {
+		item := ptr.buttonGroup.Buttons()[0]
+		item.SetChecked(true)
+		ptr.ConfigName = item.Text()
+	}
+}
+
+func (ptr *ConfigList) cleanConfList() {
+	for _, button := range ptr.buttonGroup.Buttons() {
+		ptr.buttonGroup.RemoveButton(button)
+		ptr.vboxLayout.RemoveWidget(button)
+	}
 }
