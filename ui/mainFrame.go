@@ -16,7 +16,8 @@ type MainFrame struct {
 
 	configList *widgets2.ConfigList
 
-	startButton *widgets.QPushButton
+	startButton   *widgets.QPushButton
+	settingButton *widgets.QPushButton
 
 	configEdit *configEdit.ConfigEdit
 
@@ -50,6 +51,10 @@ func (m *MainFrame) init() {
 		m.startButton.SetStyleSheet(styles.GetStyleSheet(styles.StartButton))
 	}
 
+	m.settingButton = widgets.NewQPushButton(m)
+	m.settingButton.SetFixedSize2(24, 24)
+	m.settingButton.SetStyleSheet(styles.GetStyleSheet(styles.SettingButton))
+
 	vboxLayout.AddSpacing(60)
 	vboxLayout.AddWidget(m.startButton, 0, core.Qt__AlignHCenter)
 	vboxLayout.AddSpacing(48)
@@ -62,8 +67,8 @@ func (m *MainFrame) init() {
 
 	vboxLayout.AddWidget(versionLabel, 0, core.Qt__AlignHCenter)
 	vboxLayout.AddWidget(m.configList, 1, core.Qt__AlignBottom)
-
-	vboxLayout.AddSpacing(30)
+	vboxLayout.AddSpacing(20)
+	vboxLayout.AddWidget(m.settingButton, 0, core.Qt__AlignLeft|core.Qt__AlignBottom)
 
 	m.configEdit = configEdit.NewConfigEdit(m, 0)
 
@@ -108,5 +113,9 @@ func (m *MainFrame) initConnect() {
 		if m.configName == name {
 			core2.StopV2rayXPlusSerive()
 		}
+	})
+
+	m.settingButton.ConnectClicked(func(checked bool) {
+		NewSettingFrame(nil, 0).Show()
 	})
 }

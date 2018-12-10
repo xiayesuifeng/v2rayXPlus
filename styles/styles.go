@@ -9,6 +9,27 @@ import (
 const darkColor string = "255,255,255"
 const lightColor string = "100,100,100"
 
+const SettingButton string = `
+QPushButton[flat="true"] {
+  border: 2px;
+  outline: none;
+  color: #eaeaea;
+}
+
+QPushButton {
+  border-image: url(":/resources/{theme}/outline-settings-24px.svg");
+}
+
+QPushButton::hover {
+  border-image: url(":/resources/{theme}/outline-settings-24px.svg");
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+QPushButton::pressed {
+  border-image: url(":/resources/{theme}/outline-settings-24px.svg");
+  background-color: rgba(255, 255, 255, 0.3);
+}`
+
 const EditButton string = `
 QPushButton[flat="true"] {
   border: 2px;
