@@ -83,7 +83,6 @@ func NewV2rayConfig() *V2rayConfig {
 	freedomConfig := OutboundConfig{}
 	freedomConfig.Protocol = "freedom"
 	freedomConfig.Tag = "direct"
-	freedomConfig.Settings = []byte("{}")
 	freedomConfig.StreamSetting = &StreamConfig{SocketSettings: &SocketConfig{Mark: 255}}
 
 	fieldRule := []byte(`{"type":"field",
