@@ -111,6 +111,7 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 	for _, config := range ptr.conf.OutboundConfigList {
 		if config.Protocol != "freedom" {
 			ptr.baseConfigWidget.parseConfig(config)
+			ptr.streamConfigWidget.ParseConfig(config)
 			break
 		}
 	}

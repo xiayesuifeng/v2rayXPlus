@@ -2,10 +2,15 @@ package streamConfig
 
 import (
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	"strconv"
+	"strings"
 )
 
 type StreamConfigWidget struct {
 	*widgets.QWidget
+
+	streamConfig *conf.StreamConfig
 
 	networkComboBox  *widgets.QComboBox
 	securityComboBox *widgets.QComboBox
@@ -67,4 +72,48 @@ func (ptr *StreamConfigWidget) init() {
 
 func (ptr *StreamConfigWidget) initConnect() {
 	ptr.networkComboBox.ConnectCurrentIndexChanged(ptr.stackedLayout.SetCurrentIndex)
+}
+
+func (ptr *StreamConfigWidget) ParseConfig(config *conf.OutboundConfig) {
+	ptr.streamConfig = config.StreamSetting
+
+	ptr.networkComboBox.SetCurrentText(ptr.streamConfig.Network)
+	switch ptr.streamConfig.Network {
+	case "tcp":
+		ptr.tcpConfig.tcpSettingsJsonEdit.SetPlainText(ptr.streamConfig.TcpSettings)
+	case "kcp":
+		if ptr.streamConfig.KcpSettings != nil {
+			ptr.kcpConfig.mtuLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.Mtu)))
+			ptr.kcpConfig.ttiLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.Tti)))
+			ptr.kcpConfig.uplinkCapacityLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.UplinkCapacity)))
+			ptr.kcpConfig.downlinkCapacityLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.DownlinkCapacity)))
+			ptr.kcpConfig.readBufferSizeLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.ReadBufferSize)))
+			ptr.kcpConfig.writeBufferSizeLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.WriteBufferSize)))
+			ptr.kcpConfig.congestionCheckBox.SetChecked(ptr.streamConfig.KcpSettings.Congestion)
+			if ptr.streamConfig.KcpSettings.Header != nil {
+				ptr.kcpConfig.typeComboBox.SetCurrentText(ptr.streamConfig.KcpSettings.Header.Type)
+			}
+		}
+	case "ws":
+		if ptr.streamConfig.WsSettings != nil {
+			ptr.webSocketConfig.pathLineEdit.SetText(ptr.streamConfig.WsSettings.Path)
+		}
+	case "http":
+		if ptr.streamConfig.HttpSettings != nil {
+			ptr.httpConfig.pathLineEdit.SetText(ptr.streamConfig.HttpSettings.Path)
+			ptr.httpConfig.hostTextEdit.SetPlainText(strings.Join(ptr.streamConfig.HttpSettings.Host, ","))
+		}
+	case "domainsocket":
+		if ptr.streamConfig.DsSettings != nil {
+			ptr.domainSocketConfig.pathLineEdit.SetText(ptr.streamConfig.DsSettings.Path)
+		}
+	case "quic":
+		if ptr.streamConfig.QuicSettings != nil {
+			ptr.quicConfig.securityComboBox.SetCurrentText(ptr.streamConfig.QuicSettings.Security)
+			ptr.quicConfig.key.SetText(ptr.streamConfig.QuicSettings.Key)
+			if ptr.streamConfig.QuicSettings.Header != nil {
+				ptr.quicConfig.typeComboBox.SetCurrentText(ptr.streamConfig.QuicSettings.Header.Type)
+			}
+		}
+	}
 }
