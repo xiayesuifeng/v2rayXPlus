@@ -20,6 +20,7 @@ func NewSettingFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *Settin
 
 	settingFrame := &SettingFrame{QFrame: frame}
 	settingFrame.init()
+	settingFrame.initConnect()
 
 	return settingFrame
 }
@@ -56,4 +57,10 @@ func (ptr *SettingFrame) init() {
 	vboxLayout.AddLayout(hboxLayout, 0)
 
 	ptr.SetLayout(vboxLayout)
+}
+
+func (ptr *SettingFrame) initConnect() {
+	ptr.cancelButton.ConnectClicked(func(checked bool) {
+		ptr.Close()
+	})
 }
