@@ -84,30 +84,13 @@ func NewV2rayConfig() *V2rayConfig {
 	freedomConfig.StreamSetting = &StreamConfig{SocketSettings: &SocketConfig{Mark: 255}}
 
 	fieldRule := []byte(`{"type":"field",
-	 "ip":[
-                 "0.0.0.0/8",
-                 "10.0.0.0/8",
-                 "100.64.0.0/10",
-                 "127.0.0.0/8",
-                 "169.254.0.0/16",
-                 "172.16.0.0/12",
-                 "192.0.0.0/24",
-                 "192.0.2.0/24",
-                 "192.168.0.0/16",
-                 "198.18.0.0/15",
-                 "198.51.100.0/24",
-                 "::1/128",
-                 "fc00::/7",
-                 "fe80::/10"
-              ],
-              "outboundTag":"direct"
+		"domain": ["geosite:cn"],
+		"ip":["geoip:cn", "geoip:private"],
+		"outboundTag":"direct"
 	}`)
 
-	chinaSitesRule := []byte(`{"type": "chinasites","outboundTag": "direct"}`)
-	chinaIpRule := []byte(`{"type": "chinaip","outboundTag": "direct"}`)
-
 	routerConfig := &RouterConfig{}
-	routerConfig.Settings = &RouterRulesConfig{DomainStrategy: "IPIfNonMatch", RuleList: []json.RawMessage{fieldRule, chinaSitesRule, chinaIpRule}}
+	routerConfig.Settings = &RouterRulesConfig{DomainStrategy: "IPIfNonMatch", RuleList: []json.RawMessage{fieldRule}}
 
 	serverOutboundConfig := &OutboundConfig{Settings: []byte("{}"), StreamSetting: &StreamConfig{SocketSettings: &SocketConfig{Mark: 255}}}
 
