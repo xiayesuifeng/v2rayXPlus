@@ -37,8 +37,8 @@ func (ptr *SettingFrame) init() {
 
 	portEdit := widgets.NewQLineEdit2(strconv.FormatInt(int64(conf.Conf.ListerPort), 10), ptr)
 
-	dnsEdit := widgets.NewQTextEdit2(strings.Join(conf.Conf.DnsServers, ","), ptr)
-	dnsEdit.SetFixedHeight(64)
+	dnsEdit := widgets.NewQPlainTextEdit2(strings.Join(conf.Conf.DnsServers, ",\n"), ptr)
+	dnsEdit.SetFixedHeight(72)
 
 	scrollLayout.AddRow3("监听端口:", portEdit)
 	scrollLayout.AddRow3("DNS服务器:", dnsEdit)
