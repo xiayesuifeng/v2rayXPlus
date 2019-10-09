@@ -24,6 +24,11 @@ func (ptr *TcpConfig) init() {
 	formLayout.SetContentsMargins(0, 0, 0, 0)
 
 	ptr.tcpSettingsJsonEdit = widgets.NewQPlainTextEdit(ptr)
+	ptr.tcpSettingsJsonEdit.SetPlaceholderText(`{
+    "header": {
+        "type": "none"
+    }
+}`)
 
 	formLayout.AddRow3("tcpSettings", ptr.tcpSettingsJsonEdit)
 
