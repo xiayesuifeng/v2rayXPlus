@@ -35,7 +35,20 @@ func StartV2ray() error {
 		return err
 	}
 
-	conf.Conf.ListerPort = int(*v2Config.InboundConfig.Port)
+	port := -1
+
+	for _, config := range v2Config.InboundConfigList {
+		if config.Protocol == "dokodemo-door" {
+			port = int(*config.Port)
+			break
+		}
+	}
+
+	if port == -1 {
+		return errors.New("dokodemo-door port not found")
+	}
+
+	conf.Conf.ListerPort = port
 
 	InitIpTables()
 

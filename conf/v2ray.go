@@ -39,13 +39,11 @@ type MuxConfig struct {
 }
 
 type V2rayConfig struct {
-	Port            uint16           `json:"port,omitempty"`
-	RouterConfig    *RouterConfig    `json:"routing"`
-	DNSConfig       *DnsConfig       `json:"dns"`
-	InboundConfig   *InboundConfig   `json:"inbound"`
-	OutboundConfig  *OutboundConfig  `json:"outbound,omitempty"`
-	InboundDetours  []InboundConfig  `json:"inboundDetour,omitempty"`
-	OutboundDetours []OutboundConfig `json:"outboundDetour,omitempty"`
+	Port               uint16            `json:"port,omitempty"`
+	RouterConfig       *RouterConfig     `json:"routing"`
+	DNSConfig          *DnsConfig        `json:"dns"`
+	InboundConfigList  []*InboundConfig  `json:"inbounds"`
+	OutboundConfigList []*OutboundConfig `json:"outbounds,omitempty"`
 }
 
 func ParseV2ray(conf string) (*V2rayConfig, error) {
@@ -80,7 +78,7 @@ func NewV2rayConfig() *V2rayConfig {
 	dokodemoConfig.Protocol = "dokodemo-door"
 	dokodemoConfig.Settings = []byte(`{"network": "tcp,udp","followRedirect": true}`)
 
-	freedomConfig := OutboundConfig{}
+	freedomConfig := &OutboundConfig{}
 	freedomConfig.Protocol = "freedom"
 	freedomConfig.Tag = "direct"
 	freedomConfig.StreamSetting = &StreamConfig{SocketSettings: &SocketConfig{Mark: 255}}
@@ -111,10 +109,12 @@ func NewV2rayConfig() *V2rayConfig {
 	routerConfig := &RouterConfig{}
 	routerConfig.Settings = &RouterRulesConfig{DomainStrategy: "IPIfNonMatch", RuleList: []json.RawMessage{fieldRule, chinaSitesRule, chinaIpRule}}
 
+	serverOutboundConfig := &OutboundConfig{Settings: []byte("{}"), StreamSetting: &StreamConfig{SocketSettings: &SocketConfig{Mark: 255}}}
+
 	v2ray.DNSConfig = &DnsConfig{Servers: Conf.DnsServers}
-	v2ray.InboundConfig = dokodemoConfig
-	v2ray.OutboundConfig = &OutboundConfig{Settings: []byte("{}"), StreamSetting: &StreamConfig{SocketSettings: &SocketConfig{Mark: 255}}}
-	v2ray.OutboundDetours = append(v2ray.OutboundDetours, freedomConfig)
+	v2ray.InboundConfigList = append(v2ray.InboundConfigList, dokodemoConfig)
+	v2ray.OutboundConfigList = append(v2ray.OutboundConfigList, serverOutboundConfig)
+	v2ray.OutboundConfigList = append(v2ray.OutboundConfigList, freedomConfig)
 	v2ray.RouterConfig = routerConfig
 
 	return v2ray

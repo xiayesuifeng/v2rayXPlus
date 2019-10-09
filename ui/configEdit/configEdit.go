@@ -25,6 +25,8 @@ type ConfigEdit struct {
 	saveButton   *widgets.QPushButton
 	cancelButton *widgets.QPushButton
 
+	serverOutboundConfig *conf.OutboundConfig
+
 	shadowsocsConfig *ShadowsocsConfig
 	vmessConfig      *VmessConfig
 	socksConfig      *SocksConfig
@@ -134,11 +136,18 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 		log.Println(err)
 	}
 
-	protocol := ptr.conf.OutboundConfig.Protocol
+	for _, config := range ptr.conf.OutboundConfigList {
+		if config.Protocol != "freedom" {
+			ptr.serverOutboundConfig = config
+			break
+		}
+	}
+
+	protocol := ptr.serverOutboundConfig.Protocol
 	ptr.protocolComboBox.SetCurrentText(protocol)
 	switch protocol {
 	case "shadowsocks":
-		shadowsocksConf, err := conf.NewShadowsocksServer(ptr.conf.OutboundConfig.Settings)
+		shadowsocksConf, err := conf.NewShadowsocksServer(ptr.serverOutboundConfig.Settings)
 		if err != nil {
 			log.Println(err)
 		}
@@ -149,7 +158,7 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 			ptr.shadowsocsConfig.ParseConf(shadowsocksConf.Servers[0])
 		}
 	case "vmess":
-		vmessConf, err := conf.NewVMessOutboundConfig(ptr.conf.OutboundConfig.Settings)
+		vmessConf, err := conf.NewVMessOutboundConfig(ptr.serverOutboundConfig.Settings)
 		if err != nil {
 			log.Println(err)
 		}
@@ -161,7 +170,7 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 		}
 
 	case "socks":
-		socksConfig, err := conf.NewSocksClientConfig(ptr.conf.OutboundConfig.Settings)
+		socksConfig, err := conf.NewSocksClientConfig(ptr.serverOutboundConfig.Settings)
 		if err != nil {
 			log.Println(err)
 		}
@@ -177,8 +186,8 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 func (ptr *ConfigEdit) saveConfig() error {
 	switch ptr.protocolLayout.CurrentIndex() {
 	case 0:
-		ptr.conf.OutboundConfig.Protocol = "shadowsocks"
-		shadowsocksConf, err := conf.NewShadowsocksServer(ptr.conf.OutboundConfig.Settings)
+		ptr.serverOutboundConfig.Protocol = "shadowsocks"
+		shadowsocksConf, err := conf.NewShadowsocksServer(ptr.serverOutboundConfig.Settings)
 		if err != nil {
 			return err
 		}
@@ -196,11 +205,11 @@ func (ptr *ConfigEdit) saveConfig() error {
 		if err != nil {
 			return err
 		}
-		ptr.conf.OutboundConfig.Settings = settings
+		ptr.serverOutboundConfig.Settings = settings
 		return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 	case 1:
-		ptr.conf.OutboundConfig.Protocol = "vmess"
-		vmessConf, err := conf.NewVMessOutboundConfig(ptr.conf.OutboundConfig.Settings)
+		ptr.serverOutboundConfig.Protocol = "vmess"
+		vmessConf, err := conf.NewVMessOutboundConfig(ptr.serverOutboundConfig.Settings)
 		if err != nil {
 			return err
 		}
@@ -218,11 +227,11 @@ func (ptr *ConfigEdit) saveConfig() error {
 		if err != nil {
 			return err
 		}
-		ptr.conf.OutboundConfig.Settings = settings
+		ptr.serverOutboundConfig.Settings = settings
 		return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 	case 2:
-		ptr.conf.OutboundConfig.Protocol = "socks"
-		socksConfig, err := conf.NewSocksClientConfig(ptr.conf.OutboundConfig.Settings)
+		ptr.serverOutboundConfig.Protocol = "socks"
+		socksConfig, err := conf.NewSocksClientConfig(ptr.serverOutboundConfig.Settings)
 		if err != nil {
 			return err
 		}
@@ -240,7 +249,7 @@ func (ptr *ConfigEdit) saveConfig() error {
 		if err != nil {
 			return err
 		}
-		ptr.conf.OutboundConfig.Settings = settings
+		ptr.serverOutboundConfig.Settings = settings
 		return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 	}
 	return nil
