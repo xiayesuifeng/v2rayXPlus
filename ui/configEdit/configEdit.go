@@ -5,6 +5,7 @@ import (
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	"gitlab.com/xiayesuifeng/v2rayxplus/styles"
+	"gitlab.com/xiayesuifeng/v2rayxplus/ui/configEdit/streamConfig"
 	"log"
 	"path"
 )
@@ -14,7 +15,8 @@ type ConfigEdit struct {
 
 	vboxLayout *widgets.QVBoxLayout
 
-	baseConfigWidget *BaseConfigWidget
+	baseConfigWidget   *BaseConfigWidget
+	streamConfigWidget *streamConfig.StreamConfigWidget
 
 	saveButton   *widgets.QPushButton
 	cancelButton *widgets.QPushButton
@@ -41,10 +43,12 @@ func (ptr *ConfigEdit) init() {
 	ptr.vboxLayout.SetContentsMargins(20, 20, 20, 20)
 
 	ptr.baseConfigWidget = NewBaseConfigWidget(ptr)
+	ptr.streamConfigWidget = streamConfig.NewStreamConfigWidget(ptr)
 
 	tabWidget := widgets.NewQTabWidget(ptr)
 	tabWidget.SetMinimumSize2(660, 490)
 	tabWidget.AddTab(ptr.baseConfigWidget, "基本")
+	tabWidget.AddTab(ptr.streamConfigWidget, "传输配置")
 
 	actionLayout := widgets.NewQHBoxLayout2(ptr)
 	actionLayout.SetSpacing(20)
