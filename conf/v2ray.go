@@ -34,8 +34,8 @@ type StreamConfig struct {
 }
 
 type MuxConfig struct {
-	Enabled     bool   `json:"enabled"`
-	Concurrency uint16 `json:"concurrency"`
+	Enabled     bool   `json:"enabled,omitempty"`
+	Concurrency uint16 `json:"concurrency,omitempty"`
 }
 
 type V2rayConfig struct {
