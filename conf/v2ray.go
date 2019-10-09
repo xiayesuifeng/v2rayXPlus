@@ -28,11 +28,6 @@ type SocketConfig struct {
 	TProxy string `json:"tproxy,omitempty"`
 }
 
-type StreamConfig struct {
-	Security       string        `json:"security,omitempty"`
-	SocketSettings *SocketConfig `json:"sockopt,omitempty"`
-}
-
 type MuxConfig struct {
 	Enabled     bool   `json:"enabled,omitempty"`
 	Concurrency uint16 `json:"concurrency,omitempty"`
