@@ -80,7 +80,7 @@ func (ptr *StreamConfigWidget) ParseConfig(config *conf.OutboundConfig) {
 	ptr.networkComboBox.SetCurrentText(ptr.streamConfig.Network)
 	switch ptr.streamConfig.Network {
 	case "tcp":
-		ptr.tcpConfig.tcpSettingsJsonEdit.SetPlainText(ptr.streamConfig.TcpSettings)
+		ptr.tcpConfig.tcpSettingsJsonEdit.SetPlainText(string(ptr.streamConfig.TcpSettings))
 	case "kcp":
 		if ptr.streamConfig.KcpSettings != nil {
 			ptr.kcpConfig.mtuLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.Mtu)))

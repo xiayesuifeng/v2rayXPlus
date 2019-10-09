@@ -1,10 +1,12 @@
 package conf
 
+import "encoding/json"
+
 type StreamConfig struct {
 	Network        string              `json:"network,omitempty"`
 	Security       string              `json:"security,omitempty"`
 	SocketSettings *SocketConfig       `json:"sockopt,omitempty"`
-	TcpSettings    string              `json:"tcpSettings,omitempty"`
+	TcpSettings    json.RawMessage     `json:"tcpSettings,omitempty"`
 	KcpSettings    *KcpConfig          `json:"kcpSettings,omitempty"`
 	WsSettings     *WebSocketConfig    `json:"wsSettings,omitempty"`
 	HttpSettings   *HttpConfig         `json:"httpSettings,omitempty"`
