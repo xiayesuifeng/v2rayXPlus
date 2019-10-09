@@ -122,5 +122,9 @@ func (ptr *ConfigEdit) saveConfig() error {
 		return err
 	}
 
+	if err := ptr.streamConfigWidget.SaveConfig(); err != nil {
+		return err
+	}
+
 	return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 }

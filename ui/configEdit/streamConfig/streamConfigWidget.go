@@ -117,3 +117,18 @@ func (ptr *StreamConfigWidget) ParseConfig(config *conf.OutboundConfig) {
 		}
 	}
 }
+
+func (ptr *StreamConfigWidget) SaveConfig() error {
+	ptr.streamConfig.Network = ptr.networkComboBox.CurrentText()
+	switch ptr.networkComboBox.CurrentText() {
+	case "tcp":
+		ptr.streamConfig.TcpSettings = []byte(ptr.tcpConfig.tcpSettingsJsonEdit.ToPlainText())
+	case "kcp":
+		ptr.streamConfig.KcpSettings = ptr.kcpConfig.saveConfig()
+	case "ws":
+	case "http":
+	case "domainsocket":
+	case "quic":
+	}
+	return nil
+}
