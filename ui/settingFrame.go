@@ -12,6 +12,8 @@ import (
 type SettingFrame struct {
 	*widgets.QFrame
 
+	themeComboBox *widgets.QComboBox
+
 	portEdit *widgets.QLineEdit
 	dnsEdit  *widgets.QPlainTextEdit
 
@@ -39,11 +41,15 @@ func (ptr *SettingFrame) init() {
 	scrollArea := widgets.NewQScrollArea(ptr)
 	scrollLayout := widgets.NewQFormLayout(scrollArea)
 
+	ptr.themeComboBox = widgets.NewQComboBox(ptr)
+	ptr.themeComboBox.AddItems([]string{"light", "dark"})
+
 	ptr.portEdit = widgets.NewQLineEdit2(strconv.FormatInt(int64(conf.Conf.ListerPort), 10), ptr)
 
 	ptr.dnsEdit = widgets.NewQPlainTextEdit2(strings.Join(conf.Conf.DnsServers, ",\n"), ptr)
 	ptr.dnsEdit.SetFixedHeight(72)
 
+	scrollLayout.AddRow3("主题:", ptr.themeComboBox)
 	scrollLayout.AddRow3("监听端口:", ptr.portEdit)
 	scrollLayout.AddRow3("DNS服务器:", ptr.dnsEdit)
 
@@ -72,6 +78,7 @@ func (ptr *SettingFrame) initConnect() {
 }
 
 func (ptr *SettingFrame) saveButtonClicked(checked bool) {
+	conf.Conf.Theme = ptr.themeComboBox.CurrentText()
 	conf.Conf.ListerPort, _ = strconv.Atoi(ptr.portEdit.Text())
 	conf.Conf.DnsServers = strings.FieldsFunc(strings.ReplaceAll(ptr.dnsEdit.ToPlainText(), ",", ""), unicode.IsSpace)
 
