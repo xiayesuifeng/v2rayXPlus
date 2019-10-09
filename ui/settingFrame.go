@@ -6,10 +6,14 @@ import (
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 type SettingFrame struct {
 	*widgets.QFrame
+
+	portEdit *widgets.QLineEdit
+	dnsEdit  *widgets.QPlainTextEdit
 
 	saveButton   *widgets.QPushButton
 	cancelButton *widgets.QPushButton
@@ -35,13 +39,13 @@ func (ptr *SettingFrame) init() {
 	scrollArea := widgets.NewQScrollArea(ptr)
 	scrollLayout := widgets.NewQFormLayout(scrollArea)
 
-	portEdit := widgets.NewQLineEdit2(strconv.FormatInt(int64(conf.Conf.ListerPort), 10), ptr)
+	ptr.portEdit = widgets.NewQLineEdit2(strconv.FormatInt(int64(conf.Conf.ListerPort), 10), ptr)
 
-	dnsEdit := widgets.NewQPlainTextEdit2(strings.Join(conf.Conf.DnsServers, ",\n"), ptr)
-	dnsEdit.SetFixedHeight(72)
+	ptr.dnsEdit = widgets.NewQPlainTextEdit2(strings.Join(conf.Conf.DnsServers, ",\n"), ptr)
+	ptr.dnsEdit.SetFixedHeight(72)
 
-	scrollLayout.AddRow3("监听端口:", portEdit)
-	scrollLayout.AddRow3("DNS服务器:", dnsEdit)
+	scrollLayout.AddRow3("监听端口:", ptr.portEdit)
+	scrollLayout.AddRow3("DNS服务器:", ptr.dnsEdit)
 
 	hboxLayout := widgets.NewQHBoxLayout2(ptr)
 
@@ -60,7 +64,20 @@ func (ptr *SettingFrame) init() {
 }
 
 func (ptr *SettingFrame) initConnect() {
+	ptr.saveButton.ConnectClicked(ptr.saveButtonClicked)
+
 	ptr.cancelButton.ConnectClicked(func(checked bool) {
 		ptr.Close()
 	})
+}
+
+func (ptr *SettingFrame) saveButtonClicked(checked bool) {
+	conf.Conf.ListerPort, _ = strconv.Atoi(ptr.portEdit.Text())
+	conf.Conf.DnsServers = strings.FieldsFunc(strings.ReplaceAll(ptr.dnsEdit.ToPlainText(), ",", ""), unicode.IsSpace)
+
+	if err := conf.Conf.SaveConf(); err != nil {
+		widgets.QMessageBox_Information(ptr, "错误", "配置文件保存失败，错误："+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+	} else {
+		ptr.Close()
+	}
 }
