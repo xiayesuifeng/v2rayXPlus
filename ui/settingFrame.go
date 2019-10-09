@@ -10,6 +10,9 @@ import (
 
 type SettingFrame struct {
 	*widgets.QFrame
+
+	saveButton   *widgets.QPushButton
+	cancelButton *widgets.QPushButton
 }
 
 func NewSettingFrame(parent widgets.QWidget_ITF, fo core.Qt__WindowType) *SettingFrame {
@@ -39,8 +42,18 @@ func (ptr *SettingFrame) init() {
 	scrollLayout.AddRow3("监听端口:", portEdit)
 	scrollLayout.AddRow3("DNS服务器:", dnsEdit)
 
+	hboxLayout := widgets.NewQHBoxLayout2(ptr)
+
+	ptr.saveButton = widgets.NewQPushButton2("保存", ptr)
+	ptr.cancelButton = widgets.NewQPushButton2("取消", ptr)
+
+	hboxLayout.AddStretch(1)
+	hboxLayout.AddWidget(ptr.saveButton, 0, core.Qt__AlignRight)
+	hboxLayout.AddWidget(ptr.cancelButton, 0, core.Qt__AlignRight)
+
 	vboxLayout.AddWidget(baseLabel, 0, core.Qt__AlignLeft)
 	vboxLayout.AddWidget(scrollArea, 1, 0)
+	vboxLayout.AddLayout(hboxLayout, 0)
 
 	ptr.SetLayout(vboxLayout)
 }
