@@ -32,7 +32,6 @@ func (ptr *ConfigListItem) init() {
 	toolLayout := widgets.NewQHBoxLayout2(ptr.toolFrame)
 	toolLayout.SetContentsMargins(6, 6, 6, 6)
 	toolLayout.SetSpacing(6)
-	toolLayout.SetAlign(core.Qt__AlignRight)
 
 	ptr.editButton = widgets.NewQPushButton(ptr.toolFrame)
 	ptr.editButton.SetFixedSize2(24, 24)
@@ -42,6 +41,7 @@ func (ptr *ConfigListItem) init() {
 	ptr.removeButton.SetFixedSize2(24, 24)
 	ptr.removeButton.SetStyleSheet(styles.GetStyleSheet(styles.RemoveButton))
 
+	toolLayout.AddStretch(1)
 	toolLayout.AddWidget(ptr.editButton, 0, core.Qt__AlignRight)
 	toolLayout.AddWidget(ptr.removeButton, 0, core.Qt__AlignRight)
 
