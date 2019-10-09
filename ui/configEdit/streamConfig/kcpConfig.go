@@ -1,7 +1,10 @@
 package streamConfig
 
 import (
+	"encoding/json"
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	"strconv"
 )
 
 type KcpConfig struct {
@@ -61,4 +64,38 @@ func (ptr *KcpConfig) init() {
 	formLayout.AddRow3("伪装类型(header type)", ptr.typeComboBox)
 
 	ptr.SetLayout(formLayout)
+}
+
+func (ptr *KcpConfig) saveConfig() *conf.KcpConfig {
+	kcpConfig := conf.KcpConfig{}
+
+	kcpConfig.Mtu = ptr.stringToUint32(ptr.mtuLineEdit.Text())
+	kcpConfig.Tti = ptr.stringToUint(ptr.ttiLineEdit.Text())
+	kcpConfig.UplinkCapacity = ptr.stringToUint(ptr.uplinkCapacityLineEdit.Text())
+	kcpConfig.DownlinkCapacity = ptr.stringToUint(ptr.downlinkCapacityLineEdit.Text())
+	kcpConfig.ReadBufferSize = ptr.stringToUint(ptr.readBufferSizeLineEdit.Text())
+	kcpConfig.WriteBufferSize = ptr.stringToUint(ptr.writeBufferSizeLineEdit.Text())
+	kcpConfig.Congestion = ptr.congestionCheckBox.IsChecked()
+	if ptr.typeComboBox.CurrentText() != "none" {
+		kcpConfig.Header = &conf.HeaderConfig{Type: ptr.typeComboBox.CurrentText()}
+	}
+
+	json, _ := json.Marshal(&kcpConfig)
+	if string(json) == "{}" {
+		return nil
+	}
+
+	return &kcpConfig
+}
+
+func (ptr *KcpConfig) stringToUint(s string) uint {
+	return uint(ptr.stringToUint32(s))
+}
+
+func (ptr *KcpConfig) stringToUint32(s string) uint32 {
+	if i, err := strconv.Atoi(s); err == nil {
+		return uint32(i)
+	} else {
+		return 0
+	}
 }
