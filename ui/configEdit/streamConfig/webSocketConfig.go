@@ -2,6 +2,7 @@ package streamConfig
 
 import (
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 )
 
 type WebSocketConfig struct {
@@ -30,4 +31,13 @@ func (ptr *WebSocketConfig) init() {
 	formLayout.AddRow3("path", ptr.pathLineEdit)
 
 	ptr.SetLayout(formLayout)
+}
+
+func (ptr *WebSocketConfig) saveConfig() *conf.WebSocketConfig {
+	path := ptr.pathLineEdit.Text()
+	if path != "" {
+		return &conf.WebSocketConfig{Path: path}
+	} else {
+		return nil
+	}
 }

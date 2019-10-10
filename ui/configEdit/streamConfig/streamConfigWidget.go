@@ -126,6 +126,7 @@ func (ptr *StreamConfigWidget) SaveConfig() error {
 	case "kcp":
 		ptr.streamConfig.KcpSettings = ptr.kcpConfig.saveConfig()
 	case "ws":
+		ptr.streamConfig.WsSettings = ptr.webSocketConfig.saveConfig()
 	case "http":
 	case "domainsocket":
 	case "quic":
