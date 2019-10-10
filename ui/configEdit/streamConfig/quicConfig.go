@@ -1,7 +1,9 @@
 package streamConfig
 
 import (
+	"encoding/json"
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 )
 
 type QuicConfig struct {
@@ -40,4 +42,25 @@ func (ptr *QuicConfig) init() {
 	formLayout.AddRow3("伪装类型(header type)", ptr.typeComboBox)
 
 	ptr.SetLayout(formLayout)
+}
+
+func (ptr *QuicConfig) saveConfig() *conf.QuicConfig {
+	quicConfig := conf.QuicConfig{}
+
+	quicConfig.Key = ptr.key.Text()
+
+	if ptr.securityComboBox.CurrentText() != "none" {
+		quicConfig.Security = ptr.securityComboBox.CurrentText()
+	}
+
+	if ptr.typeComboBox.CurrentText() != "none" {
+		quicConfig.Header = &conf.HeaderConfig{Type: ptr.typeComboBox.CurrentText()}
+	}
+
+	json, _ := json.Marshal(&quicConfig)
+	if string(json) == "{}" {
+		return nil
+	}
+
+	return &quicConfig
 }
