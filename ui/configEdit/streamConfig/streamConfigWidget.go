@@ -77,6 +77,8 @@ func (ptr *StreamConfigWidget) initConnect() {
 func (ptr *StreamConfigWidget) ParseConfig(config *conf.OutboundConfig) {
 	ptr.streamConfig = config.StreamSetting
 
+	ptr.securityComboBox.SetCurrentText(ptr.streamConfig.Security)
+
 	ptr.networkComboBox.SetCurrentText(ptr.streamConfig.Network)
 	switch ptr.streamConfig.Network {
 	case "tcp":
