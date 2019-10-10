@@ -2,6 +2,8 @@ package streamConfig
 
 import (
 	"encoding/json"
+	"github.com/therecipe/qt/core"
+	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	"strconv"
@@ -48,6 +50,16 @@ func (ptr *KcpConfig) init() {
 	ptr.downlinkCapacityLineEdit.SetPlaceholderText("20")
 	ptr.readBufferSizeLineEdit.SetPlaceholderText("2")
 	ptr.writeBufferSizeLineEdit.SetPlaceholderText("2")
+
+	ptr.mtuLineEdit.SetValidator(gui.NewQIntValidator2(576, 1460, ptr))
+	ptr.ttiLineEdit.SetValidator(gui.NewQIntValidator2(10, 100, ptr))
+
+	regExpValidator := gui.NewQRegExpValidator2(core.NewQRegExp2("[0-9]+$", core.Qt__CaseSensitive, core.QRegExp__RegExp), ptr)
+
+	ptr.uplinkCapacityLineEdit.SetValidator(regExpValidator)
+	ptr.downlinkCapacityLineEdit.SetValidator(regExpValidator)
+	ptr.readBufferSizeLineEdit.SetValidator(regExpValidator)
+	ptr.writeBufferSizeLineEdit.SetValidator(regExpValidator)
 
 	ptr.congestionCheckBox = widgets.NewQCheckBox2("启用", ptr)
 

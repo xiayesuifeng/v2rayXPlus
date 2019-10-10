@@ -2,6 +2,7 @@ package ui
 
 import (
 	"github.com/therecipe/qt/core"
+	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/widgets"
 	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 	"strconv"
@@ -46,6 +47,7 @@ func (ptr *SettingFrame) init() {
 	ptr.themeComboBox.SetCurrentText(conf.Conf.Theme)
 
 	ptr.portEdit = widgets.NewQLineEdit2(strconv.FormatInt(int64(conf.Conf.ListerPort), 10), ptr)
+	ptr.portEdit.SetValidator(gui.NewQIntValidator2(1024, 65535, ptr))
 
 	ptr.dnsEdit = widgets.NewQPlainTextEdit2(strings.Join(conf.Conf.DnsServers, ",\n"), ptr)
 	ptr.dnsEdit.SetFixedHeight(72)
