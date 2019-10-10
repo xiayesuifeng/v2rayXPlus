@@ -2,6 +2,7 @@ package streamConfig
 
 import (
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
 )
 
 type DomainSocketConfig struct {
@@ -30,4 +31,14 @@ func (ptr *DomainSocketConfig) init() {
 	formLayout.AddRow3("path", ptr.pathLineEdit)
 
 	ptr.SetLayout(formLayout)
+}
+
+func (ptr *DomainSocketConfig) saveConfig() *conf.DomainSocketConfig {
+	path := ptr.pathLineEdit.Text()
+
+	if path != "" {
+		return &conf.DomainSocketConfig{Path: path}
+	} else {
+		return nil
+	}
 }
