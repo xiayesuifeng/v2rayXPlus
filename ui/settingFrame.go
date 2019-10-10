@@ -43,6 +43,7 @@ func (ptr *SettingFrame) init() {
 
 	ptr.themeComboBox = widgets.NewQComboBox(ptr)
 	ptr.themeComboBox.AddItems([]string{"light", "dark"})
+	ptr.themeComboBox.SetCurrentText(conf.Conf.Theme)
 
 	ptr.portEdit = widgets.NewQLineEdit2(strconv.FormatInt(int64(conf.Conf.ListerPort), 10), ptr)
 
