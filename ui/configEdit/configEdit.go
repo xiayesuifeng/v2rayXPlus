@@ -17,6 +17,7 @@ type ConfigEdit struct {
 
 	baseConfigWidget   *BaseConfigWidget
 	streamConfigWidget *streamConfig.StreamConfigWidget
+	muxConfigWidget    *MuxConfigWidget
 
 	saveButton   *widgets.QPushButton
 	cancelButton *widgets.QPushButton
@@ -44,11 +45,13 @@ func (ptr *ConfigEdit) init() {
 
 	ptr.baseConfigWidget = NewBaseConfigWidget(ptr)
 	ptr.streamConfigWidget = streamConfig.NewStreamConfigWidget(ptr)
+	ptr.muxConfigWidget = NewMuxConfigWidget(ptr)
 
 	tabWidget := widgets.NewQTabWidget(ptr)
 	tabWidget.SetMinimumSize2(660, 490)
 	tabWidget.AddTab(ptr.baseConfigWidget, "基本")
 	tabWidget.AddTab(ptr.streamConfigWidget, "传输配置")
+	tabWidget.AddTab(ptr.muxConfigWidget, "Mux 配置")
 
 	actionLayout := widgets.NewQHBoxLayout2(ptr)
 	actionLayout.SetSpacing(20)
@@ -112,6 +115,7 @@ func (ptr *ConfigEdit) parseConfig(name string) {
 		if config.Protocol != "freedom" {
 			ptr.baseConfigWidget.parseConfig(config)
 			ptr.streamConfigWidget.ParseConfig(config)
+			ptr.muxConfigWidget.parseConfig(config)
 			break
 		}
 	}
