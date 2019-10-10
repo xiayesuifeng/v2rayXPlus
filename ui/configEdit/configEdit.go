@@ -130,5 +130,7 @@ func (ptr *ConfigEdit) saveConfig() error {
 		return err
 	}
 
+	ptr.muxConfigWidget.saveConfig()
+
 	return ptr.conf.Save(path.Join(conf.V2rayConfigPath, ptr.confName+".json"))
 }

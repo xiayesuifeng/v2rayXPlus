@@ -49,3 +49,19 @@ func (ptr *MuxConfigWidget) parseConfig(config *conf.OutboundConfig) {
 		}
 	}
 }
+
+func (ptr *MuxConfigWidget) saveConfig() {
+	if ptr.enableCheckBox.IsChecked() {
+		ptr.serverOutboundConfig.MuxSettings = &conf.MuxConfig{Enabled: true, Concurrency: ptr.stringToUint16(ptr.concurrencyLineEdit.Text())}
+	} else {
+		ptr.serverOutboundConfig.MuxSettings = nil
+	}
+}
+
+func (ptr *MuxConfigWidget) stringToUint16(s string) uint16 {
+	if i, err := strconv.Atoi(s); err == nil {
+		return uint16(i)
+	} else {
+		return 0
+	}
+}
