@@ -1,7 +1,11 @@
 package streamConfig
 
 import (
+	"encoding/json"
 	"github.com/therecipe/qt/widgets"
+	"gitlab.com/xiayesuifeng/v2rayxplus/conf"
+	"strings"
+	"unicode"
 )
 
 type HttpConfig struct {
@@ -34,4 +38,17 @@ func (ptr *HttpConfig) init() {
 	formLayout.AddRow3("path", ptr.pathLineEdit)
 
 	ptr.SetLayout(formLayout)
+}
+
+func (ptr *HttpConfig) saveConfig() *conf.HttpConfig {
+	httpConfig := conf.HttpConfig{Path: ptr.pathLineEdit.Text()}
+
+	httpConfig.Host = strings.FieldsFunc(strings.ReplaceAll(ptr.hostTextEdit.ToPlainText(), ",", " "), unicode.IsSpace)
+
+	json, _ := json.Marshal(&httpConfig)
+	if string(json) == "{}" {
+		return nil
+	}
+
+	return &httpConfig
 }

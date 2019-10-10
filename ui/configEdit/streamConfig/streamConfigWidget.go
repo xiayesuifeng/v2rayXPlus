@@ -128,6 +128,7 @@ func (ptr *StreamConfigWidget) SaveConfig() error {
 	case "ws":
 		ptr.streamConfig.WsSettings = ptr.webSocketConfig.saveConfig()
 	case "http":
+		ptr.streamConfig.HttpSettings = ptr.httpConfig.saveConfig()
 	case "domainsocket":
 	case "quic":
 	}
