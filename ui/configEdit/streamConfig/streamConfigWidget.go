@@ -83,12 +83,12 @@ func (ptr *StreamConfigWidget) ParseConfig(config *conf.OutboundConfig) {
 		ptr.tcpConfig.tcpSettingsJsonEdit.SetPlainText(string(ptr.streamConfig.TcpSettings))
 	case "kcp":
 		if ptr.streamConfig.KcpSettings != nil {
-			ptr.kcpConfig.mtuLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.Mtu)))
-			ptr.kcpConfig.ttiLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.Tti)))
-			ptr.kcpConfig.uplinkCapacityLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.UplinkCapacity)))
-			ptr.kcpConfig.downlinkCapacityLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.DownlinkCapacity)))
-			ptr.kcpConfig.readBufferSizeLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.ReadBufferSize)))
-			ptr.kcpConfig.writeBufferSizeLineEdit.SetText(strconv.Itoa(int(ptr.streamConfig.KcpSettings.WriteBufferSize)))
+			ptr.kcpConfig.mtuLineEdit.SetText(ptr.uint32ToString(ptr.streamConfig.KcpSettings.Mtu))
+			ptr.kcpConfig.ttiLineEdit.SetText(ptr.uintToString(ptr.streamConfig.KcpSettings.Tti))
+			ptr.kcpConfig.uplinkCapacityLineEdit.SetText(ptr.uintToString(ptr.streamConfig.KcpSettings.UplinkCapacity))
+			ptr.kcpConfig.downlinkCapacityLineEdit.SetText(ptr.uintToString(ptr.streamConfig.KcpSettings.DownlinkCapacity))
+			ptr.kcpConfig.readBufferSizeLineEdit.SetText(ptr.uintToString(ptr.streamConfig.KcpSettings.ReadBufferSize))
+			ptr.kcpConfig.writeBufferSizeLineEdit.SetText(ptr.uintToString(ptr.streamConfig.KcpSettings.WriteBufferSize))
 			ptr.kcpConfig.congestionCheckBox.SetChecked(ptr.streamConfig.KcpSettings.Congestion)
 			if ptr.streamConfig.KcpSettings.Header != nil {
 				ptr.kcpConfig.typeComboBox.SetCurrentText(ptr.streamConfig.KcpSettings.Header.Type)
@@ -131,4 +131,16 @@ func (ptr *StreamConfigWidget) SaveConfig() error {
 	case "quic":
 	}
 	return nil
+}
+
+func (ptr *StreamConfigWidget) uint32ToString(u uint32) string {
+	if u == 0 {
+		return ""
+	}
+
+	return strconv.Itoa(int(u))
+}
+
+func (ptr *StreamConfigWidget) uintToString(u uint) string {
+	return ptr.uint32ToString(uint32(u))
 }
