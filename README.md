@@ -12,18 +12,36 @@
 
 感谢[@linyuan](https://t.me/linyuan)提供的logo
 
-
 ## Dependencies
 [therecipe/qt](https://github.com/therecipe/qt.git)
 
-## Install therecipe/qt
+## Install v2rayxplus for archlinux
+```bash
+wget https://mirrors.firerain.me/x86_64/v2rayxplus-1.0.0-1-x86_64.pkg.tar.xz
+sudo pacman -U ./v2rayxplus-1.0.0-1-x86_64.pkg.tar.xz
+```
+
+## Install v2rayxplus for other GNU/Linux (qt 5.13 +)
+```bash
+wget https://mirrors.firerain.me/x86_64/v2rayxplus-1.0.0-1-x86_64.pkg.tar.xz
+mkdir tmp
+cd tmp
+tar -xvf ../v2rayxplus-1.0.0-1-x86_64.pkg.tar.xz
+rm .*
+mv -f ./usr/* /usr
+sudo systemctl daemon-reload
+```
+
+## Build v2rayxplus install
+
+### 1. Install therecipe/qt
 
 [https://blog.firerain.me/article/6](https://blog.firerain.me/article/6) or
 [therecipe/qt install](https://github.com/therecipe/qt/wiki/Installation)
 
 add $GOPATH/go/bin to environment variables
 
-## Build or [v2rayxplus.zip](https://gitlab.com/xiayesuifeng/v2rayxplus/builds/artifacts/master/download?job=run-build) (qt5.11)
+### 2. Build or [v2rayxplus.zip](https://gitlab.com/xiayesuifeng/v2rayxplus/builds/artifacts/master/download?job=run-build) (qt 5.13 +)
 
 > bash
 ```
@@ -49,26 +67,10 @@ qtdeploy build desktop
 ```
 
 # Install
-vim /usr/lib/systemd/system/v2rayxplus.service
 ```
-[Unit]
-Description=V2RayXPlus Service
-After=network.target
-Wants=network.target
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/v2rayxplus -start
-ExecStop=/usr/bin/v2rayxplus -stop
-ExecStartPre=/usr/bin/systemctl start v2ray.service
-ExecStopPost=/usr/bin/systemctl stop v2ray.service
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-```
-
-```
+sudo wget https://gitlab.com/firerainos/firerain-package/tree/master/v2rayxplus/v2rayxplus.service -O /usr/lib/systemd/system/v2rayxplus.service
+sudo wget https://gitlab.com/firerainos/firerain-package/tree/master/v2rayxplus/v2rayxplus.desktop -O /usr/share/applications/v2rayxplus.desktop
+sudo wget https://gitlab.com/firerainos/firerain-package/tree/master/v2rayxplus/v2rayxplus.svg -O /usr/share/icons/hicolor/96x96/apps/v2rayxplus.svg
 sudo cp ./deploy/linux/v2rayxplus /usr/bin
 sudo systemctl daemon-reload
 ```
