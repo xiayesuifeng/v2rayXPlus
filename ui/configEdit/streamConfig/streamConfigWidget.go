@@ -124,9 +124,7 @@ func (ptr *StreamConfigWidget) SaveConfig() error {
 	ptr.streamConfig.Network = ptr.networkComboBox.CurrentText()
 
 	security := ptr.securityComboBox.CurrentText()
-	if security != "none" {
-		ptr.streamConfig.Security = security
-	}
+	ptr.streamConfig.Security = security
 
 	switch ptr.networkComboBox.CurrentText() {
 	case "tcp":
