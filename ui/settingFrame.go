@@ -79,13 +79,24 @@ func (ptr *SettingFrame) initConnect() {
 }
 
 func (ptr *SettingFrame) saveButtonClicked(checked bool) {
-	conf.Conf.Theme = ptr.themeComboBox.CurrentText()
+	themeChange := false
+
+	theme := ptr.themeComboBox.CurrentText()
+	if conf.Conf.Theme != theme {
+		conf.Conf.Theme = theme
+		themeChange = true
+	}
+
 	conf.Conf.ListerPort, _ = strconv.Atoi(ptr.portEdit.Text())
 	conf.Conf.DnsServers = strings.FieldsFunc(strings.ReplaceAll(ptr.dnsEdit.ToPlainText(), ",", " "), unicode.IsSpace)
 
 	if err := conf.Conf.SaveConf(); err != nil {
 		widgets.QMessageBox_Information(ptr, "错误", "配置文件保存失败，错误："+err.Error(), widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
 	} else {
+		if themeChange {
+			widgets.QMessageBox_Information(ptr, "提示", "主题修改将在下次启动时生效", widgets.QMessageBox__Ok, widgets.QMessageBox__Ok)
+		}
+
 		ptr.Close()
 	}
 }
